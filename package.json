@@ -1,0 +1,45 @@
+{
+  "name": "orderbook-dex-v1",
+  "version": "1.0.0",
+  "license": "BUSL-1.1",
+  "private": true,
+  "main": "dist/index.js",
+  "scripts": {
+    "prepare": "gulp",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "4.6.0",
+    "abi2ts-lib": "file:deps/abi2ts-lib-0.1.0.tgz",
+    "addressbook": "file:deps/addressbook-1.0.0.tgz",
+    "ethers": "~5.6.9",
+    "orderbook-dex": "file:deps/orderbook-dex-1.0.0.tgz",
+    "orderbook-dex-operator": "file:deps/orderbook-dex-operator-1.0.0.tgz"
+  },
+  "devDependencies": {
+    "@types/chai": "~4.3.1",
+    "@types/chai-as-promised": "~7.1.5",
+    "@types/fancy-log": "~1.3.1",
+    "@types/gulp": "~4.0.9",
+    "@types/mocha": "~9.1.1",
+    "@types/mochawesome": "~6.2.1",
+    "@types/through2": "~2.0.36",
+    "@typescript-eslint/eslint-plugin": "~5.29.0",
+    "@typescript-eslint/parser": "~5.29.0",
+    "abi2ts": "file:deps/abi2ts-0.1.0.tgz",
+    "chai": "~4.3.6",
+    "chai-as-promised": "~7.1.1",
+    "contract-test-helper": "file:deps/contract-test-helper-0.1.0.tgz",
+    "del": "~6.1.1",
+    "eslint": "~8.18.0",
+    "fancy-log": "~2.0.0",
+    "gulp": "~4.0.2",
+    "gulp-cli": "~2.3.0",
+    "mocha": "~10.0.0",
+    "mochawesome": "~7.1.3",
+    "solidity-compiler": "file:deps/solidity-compiler-0.8.15.tgz",
+    "through2": "~4.0.2",
+    "ts-node": "~10.8.1",
+    "typescript": "~4.7.4"
+  }
+}
