@@ -1,5 +1,5 @@
-import { formatValue, MAX_UINT256, MAX_UINT8, Transaction } from 'abi2ts-lib';
-import { AddContextFunction } from 'contract-test-helper';
+import { formatValue, MAX_UINT256, MAX_UINT8, Transaction } from '@theorderbookdex/abi2ts-lib';
+import { AddContextFunction } from '@theorderbookdex/contract-test-helper';
 import { FillAction } from '../action/FillAction';
 import { describeOrderType, OrderType } from '../state/OrderType';
 import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';

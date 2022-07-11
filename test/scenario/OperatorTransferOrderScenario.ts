@@ -1,6 +1,6 @@
-import { abiencode, formatValue, Transaction } from 'abi2ts-lib';
-import { Account, AddContextFunction } from 'contract-test-helper';
-import { TransferOrderResult } from 'orderbook-dex-operator/dist/interfaces/IOperator';
+import { abiencode, formatValue, Transaction } from '@theorderbookdex/abi2ts-lib';
+import { Account, AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { TransferOrderResult } from '@theorderbookdex/orderbook-dex-operator/dist/interfaces/IOperator';
 import { Orders } from '../state/Orders';
 import { describeOrderType, OrderType } from '../state/OrderType';
 import { OperatorContext, OperatorScenario, OperatorScenarioProperties } from './OperatorScenario';

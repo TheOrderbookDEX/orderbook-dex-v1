@@ -1,6 +1,6 @@
-import { parseValue } from 'abi2ts-lib';
-import { NotRegistered } from 'addressbook/dist/utils/AddressBookUtil';
-import { Account, generatorChain } from 'contract-test-helper';
+import { parseValue } from '@theorderbookdex/abi2ts-lib';
+import { NotRegistered } from '@theorderbookdex/addressbook/dist/utils/AddressBookUtil';
+import { Account, generatorChain } from '@theorderbookdex/contract-test-helper';
 import { InvalidOrderId, InvalidPrice, OrderDeleted, Unauthorized } from '../../src/OrderbookV1';
 import { CancelOrderAction } from '../action/CancelOrderAction';
 import { ClaimOrderAction } from '../action/ClaimOrderAction';

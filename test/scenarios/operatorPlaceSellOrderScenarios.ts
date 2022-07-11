@@ -1,5 +1,5 @@
-import { DefaultError, parseValue } from 'abi2ts-lib';
-import { generatorChain, range } from 'contract-test-helper';
+import { DefaultError, parseValue } from '@theorderbookdex/abi2ts-lib';
+import { generatorChain, range } from '@theorderbookdex/contract-test-helper';
 import { InvalidAmount, InvalidPrice } from '../../src/OrderbookV1';
 import { PlaceOrderAction } from '../action/PlaceOrderAction';
 import { EXHAUSTIVE } from '../config';

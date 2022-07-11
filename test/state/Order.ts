@@ -1,4 +1,4 @@
-import { Account } from 'contract-test-helper';
+import { Account } from '@theorderbookdex/contract-test-helper';
 import { OrderType } from './OrderType';
 
 export enum SpecialAccount {

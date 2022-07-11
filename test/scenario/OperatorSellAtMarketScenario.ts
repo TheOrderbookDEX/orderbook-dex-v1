@@ -1,6 +1,6 @@
-import { abiencode, formatValue, MAX_UINT8, Transaction } from 'abi2ts-lib';
-import { AddContextFunction } from 'contract-test-helper';
-import { SellAtMarketResult } from 'orderbook-dex-operator/dist/interfaces/IOperator';
+import { abiencode, formatValue, MAX_UINT8, Transaction } from '@theorderbookdex/abi2ts-lib';
+import { AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { SellAtMarketResult } from '@theorderbookdex/orderbook-dex-operator/dist/interfaces/IOperator';
 import { FillAction } from '../action/FillAction';
 import { Orders } from '../state/Orders';
 import { OrderType } from '../state/OrderType';

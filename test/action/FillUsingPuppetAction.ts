@@ -1,7 +1,7 @@
 import { OrderType } from '../state/OrderType';
 import { Orders } from '../state/Orders';
 import { OrderbookV1 } from '../../src/OrderbookV1';
-import { MAX_UINT256, MAX_UINT8 } from 'abi2ts-lib';
+import { MAX_UINT256, MAX_UINT8 } from '@theorderbookdex/abi2ts-lib';
 import { ReentrancyAction, ReentrancyActionProperties } from './ReentrancyAction';
 import { OrderbookReentrancyContext } from '../scenario/OrderbookReentrancyScenario';
 

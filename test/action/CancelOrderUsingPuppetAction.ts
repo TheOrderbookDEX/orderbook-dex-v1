@@ -2,7 +2,7 @@ import { OrderType } from '../state/OrderType';
 import { OrderbookAction, OrderbookActionProperties } from './OrderbookAction';
 import { Orders } from '../state/Orders';
 import { OrderbookV1 } from '../../src/OrderbookV1';
-import { MAX_UINT32 } from 'abi2ts-lib';
+import { MAX_UINT32 } from '@theorderbookdex/abi2ts-lib';
 import { OrderbookReentrancyContext } from '../scenario/OrderbookReentrancyScenario';
 
 export interface CancelOrderUsingPuppetActionProperties extends OrderbookActionProperties {

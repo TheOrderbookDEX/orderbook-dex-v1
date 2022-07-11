@@ -1,4 +1,4 @@
-import { TestSetupAction, TestSetupActionProperties } from 'contract-test-helper';
+import { TestSetupAction, TestSetupActionProperties } from '@theorderbookdex/contract-test-helper';
 import { OrderbookReentrancyContext } from '../scenario/OrderbookReentrancyScenario';
 
 export type ReentrancyActionProperties = TestSetupActionProperties;

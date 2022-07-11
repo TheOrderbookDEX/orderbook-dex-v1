@@ -1,9 +1,9 @@
-import { AddContextFunction, applySetupActions, BaseTestContext, TestScenario, TestScenarioProperties } from 'contract-test-helper';
-import { ERC20Mock } from 'orderbook-dex/dist/testing/ERC20Mock';
-import { AddressBook } from 'addressbook/dist/AddressBook';
+import { AddContextFunction, applySetupActions, BaseTestContext, TestScenario, TestScenarioProperties } from '@theorderbookdex/contract-test-helper';
+import { ERC20Mock } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20Mock';
+import { AddressBook } from '@theorderbookdex/addressbook/dist/AddressBook';
 import { OrderbookV1 } from '../../src/OrderbookV1';
 import { Orders } from '../state/Orders';
-import { formatValue, parseValue } from 'abi2ts-lib';
+import { formatValue, parseValue } from '@theorderbookdex/abi2ts-lib';
 
 type ERC20MockInterface = Pick<ERC20Mock, keyof ERC20Mock>;
 

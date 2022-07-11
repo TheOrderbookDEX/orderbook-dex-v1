@@ -2,7 +2,7 @@ import { OrderType } from '../state/OrderType';
 import { OrderbookAction, OrderbookActionProperties } from './OrderbookAction';
 import { Orders } from '../state/Orders';
 import { OrderbookContext } from '../scenario/OrderbookScenario';
-import { MAX_UINT256, MAX_UINT8 } from 'abi2ts-lib';
+import { MAX_UINT256, MAX_UINT8 } from '@theorderbookdex/abi2ts-lib';
 
 export interface FillActionProperties extends OrderbookActionProperties {
     readonly orderType: OrderType;

@@ -1,8 +1,8 @@
-import { ContractError, formatValue, parseValue } from 'abi2ts-lib';
-import { AddContextFunction } from 'contract-test-helper';
-import { IOperator } from 'orderbook-dex-operator/dist/interfaces/IOperator';
-import { Operator } from 'orderbook-dex-operator/dist/Operator';
-import { OperatorLogicRegistry } from 'orderbook-dex-operator/dist/OperatorLogicRegistry';
+import { ContractError, formatValue, parseValue } from '@theorderbookdex/abi2ts-lib';
+import { AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { IOperator } from '@theorderbookdex/orderbook-dex-operator/dist/interfaces/IOperator';
+import { Operator } from '@theorderbookdex/orderbook-dex-operator/dist/Operator';
+import { OperatorLogicRegistry } from '@theorderbookdex/orderbook-dex-operator/dist/OperatorLogicRegistry';
 import { OperatorLogicV1 } from '../../src/OperatorLogicV1';
 import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
 

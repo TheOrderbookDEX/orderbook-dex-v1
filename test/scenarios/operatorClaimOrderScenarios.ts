@@ -1,5 +1,5 @@
-import { parseValue } from 'abi2ts-lib';
-import { applySetupActions, generatorChain, range, repeat } from 'contract-test-helper';
+import { parseValue } from '@theorderbookdex/abi2ts-lib';
+import { applySetupActions, generatorChain, range, repeat } from '@theorderbookdex/contract-test-helper';
 import { InvalidOrderId, Unauthorized, InvalidAmount, InvalidPrice, OrderDeleted } from '../../src/OrderbookV1';
 import { CancelOrderAction } from '../action/CancelOrderAction';
 import { ClaimOrderAction } from '../action/ClaimOrderAction';

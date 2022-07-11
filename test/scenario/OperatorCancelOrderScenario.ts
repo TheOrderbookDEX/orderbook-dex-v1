@@ -1,6 +1,6 @@
-import { abiencode, formatValue, MAX_UINT32, Transaction } from 'abi2ts-lib';
-import { AddContextFunction } from 'contract-test-helper';
-import { CancelOrderResult } from 'orderbook-dex-operator/dist/interfaces/IOperator';
+import { abiencode, formatValue, MAX_UINT32, Transaction } from '@theorderbookdex/abi2ts-lib';
+import { AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { CancelOrderResult } from '@theorderbookdex/orderbook-dex-operator/dist/interfaces/IOperator';
 import { CancelOrderAction } from '../action/CancelOrderAction';
 import { describeOrderType, OrderType } from '../state/OrderType';
 import { OperatorContext, OperatorScenario, OperatorScenarioProperties } from './OperatorScenario';

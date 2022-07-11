@@ -8,7 +8,7 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {
     BuyAtMarketResult, SellAtMarketResult, PlaceBuyOrderResult, PlaceSellOrderResult, ClaimOrderResult,
     TransferOrderResult, CancelOrderResult
-} from "orderbook-dex-operator/contracts/interfaces/IOperatorLogic.sol";
+} from "@theorderbookdex/orderbook-dex-operator/contracts/interfaces/IOperatorLogic.sol";
 
 /**
  * Operator logic for V1 orderbooks.
