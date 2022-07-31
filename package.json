@@ -1,6 +1,6 @@
 {
   "name": "@theorderbookdex/orderbook-dex-v1",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "This is the package for the V1 smart contract implementation of The Orderbook DEX",
   "license": "BUSL-1.1",
   "author": "The Orderbook DEX Team",
@@ -12,15 +12,15 @@
   },
   "dependencies": {
     "@openzeppelin/contracts": "4.6.0",
-    "@theorderbookdex/abi2ts-lib": "~0.1.0",
-    "@theorderbookdex/addressbook": "~1.0.0",
-    "@theorderbookdex/orderbook-dex": "~1.0.0-rc.0",
-    "@theorderbookdex/orderbook-dex-operator": "~1.0.0-rc.0",
+    "@theorderbookdex/abi2ts-lib": "~0.2.0",
+    "@theorderbookdex/addressbook": "~1.1.0",
+    "@theorderbookdex/orderbook-dex": "~1.0.0-rc.1",
+    "@theorderbookdex/orderbook-dex-operator": "~1.0.0-rc.1",
     "ethers": "~5.6.9"
   },
   "devDependencies": {
-    "@theorderbookdex/abi2ts": "~0.1.0",
-    "@theorderbookdex/contract-test-helper": "~0.1.0",
+    "@theorderbookdex/abi2ts": "~0.2.0",
+    "@theorderbookdex/contract-test-helper": "~0.2.0",
     "@theorderbookdex/solidity-compiler": "0.8.15",
     "@types/chai": "~4.3.1",
     "@types/chai-as-promised": "~7.1.5",
