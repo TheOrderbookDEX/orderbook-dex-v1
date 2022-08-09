@@ -1,6 +1,6 @@
 {
   "name": "@theorderbookdex/orderbook-dex-v1",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "description": "This is the package for the V1 smart contract implementation of The Orderbook DEX",
   "license": "BUSL-1.1",
   "author": "The Orderbook DEX Team",
@@ -11,11 +11,11 @@
     "test": "mocha"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "4.6.0",
+    "@openzeppelin/contracts": "4.7.2",
     "@theorderbookdex/abi2ts-lib": "~0.2.0",
     "@theorderbookdex/addressbook": "~1.1.0",
-    "@theorderbookdex/orderbook-dex": "~1.0.0-rc.1",
-    "@theorderbookdex/orderbook-dex-operator": "~1.0.0-rc.1",
+    "@theorderbookdex/orderbook-dex": "~1.0.0-rc.2",
+    "@theorderbookdex/orderbook-dex-operator": "~1.0.0-rc.2",
     "ethers": "~5.6.9"
   },
   "devDependencies": {
