@@ -15,8 +15,7 @@
     "@theorderbookdex/abi2ts-lib": "~0.2.0",
     "@theorderbookdex/addressbook": "~1.1.1",
     "@theorderbookdex/orderbook-dex": "1.0.0-rc.3",
-    "@theorderbookdex/orderbook-dex-operator": "1.0.0-rc.4",
-    "ethers": "~5.6.9"
+    "@theorderbookdex/orderbook-dex-operator": "1.0.0-rc.4"
   },
   "devDependencies": {
     "@theorderbookdex/abi2ts": "~0.2.0",
