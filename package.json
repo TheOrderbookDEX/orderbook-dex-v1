@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@theorderbookdex/abi2ts": "~0.2.0",
-    "@theorderbookdex/contract-test-helper": "~0.2.0",
+    "@theorderbookdex/contract-test-helper": "~0.2.1",
     "@theorderbookdex/solidity-compiler": "0.8.15",
     "@types/chai": "^4.3.3",
     "@types/chai-as-promised": "^7.1.5",
