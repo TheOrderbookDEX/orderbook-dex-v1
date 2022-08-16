@@ -62,5 +62,5 @@ export function compileContractsTS() {
 }
 
 export default function(done: () => void) {
-    series(clean, compileContracts, createContractsTS, createIndexTS, compileContractsTS)(done);
+    void series(clean, compileContracts, createContractsTS, createIndexTS, compileContractsTS)(done);
 }
