@@ -1,5 +1,4 @@
 import { src, dest, series } from 'gulp';
-import del from 'del';
 import through2 from 'through2';
 import log from 'fancy-log';
 import * as File from 'vinyl';
@@ -8,9 +7,15 @@ import { abi2ts } from '@theorderbookdex/abi2ts';
 import { spawn } from 'child_process';
 import { readdirSync, writeFileSync } from 'fs';
 import { resolve, relative } from 'path';
+import rimraf from 'rimraf';
+import { promisify } from 'util';
+
+const promisifiedRimraf = promisify(rimraf);
 
 export async function clean() {
-    await del([ 'artifacts/**', 'src/**', '!src/tsconfig.json', 'dist/**' ]);
+    await promisifiedRimraf('artifacts/**');
+    await promisifiedRimraf('src/!(tsconfig.json)');
+    await promisifiedRimraf('dist/**');
 }
 
 export function compileContracts() {
