@@ -1,8 +1,8 @@
 import { src, dest, series } from 'gulp';
 import through2 from 'through2';
 import log from 'fancy-log';
-import * as File from 'vinyl';
-import solc from '@theorderbookdex/solidity-compiler';
+import File from 'vinyl';
+import solc, { JSON_INPUT } from '@theorderbookdex/solidity-compiler';
 import { abi2ts } from '@theorderbookdex/abi2ts';
 import { spawn } from 'child_process';
 import { readdirSync, writeFileSync } from 'fs';
@@ -21,16 +21,27 @@ export async function clean() {
 export function compileContracts() {
     return src('contracts/**/*.sol')
         .pipe(through2.obj(function(file: File, _, callback) {
-            file.contents = Buffer.from(JSON.stringify(solc(file.base, file.relative, file.contents as Buffer, { optimizer: { enabled: true } }), null, 2));
+            const compileResult = solc(file.base, file.relative, file.contents as Buffer, { optimizer: { enabled: true } });
+
+            const inputJson = file.clone();
+            inputJson.contents = Buffer.from(JSON.stringify(compileResult[JSON_INPUT], null, 2));
+            inputJson.extname = '.input.json';
+            this.push(inputJson);
+
+            const compileJson = file.clone();
+            compileJson.contents = Buffer.from(JSON.stringify(compileResult, null, 2));
+            compileJson.extname = '.json';
+            this.push(compileJson);
+
             log(`>>> Compiled contracts/${file.relative}`);
-            file.extname = '.json';
-            callback(null, file);
+
+            callback();
         }))
         .pipe(dest('artifacts'));
 }
 
 export function createContractsTS() {
-    return src([ 'artifacts/**/*.json' ])
+    return src([ 'artifacts/**/*.json', '!artifacts/**/*.input.json' ])
         .pipe(through2.obj(function(file: File, _, callback) {
             file.contents = abi2ts(file.contents as Buffer);
             file.extname = '.ts';
