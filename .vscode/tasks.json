@@ -23,6 +23,18 @@
 				"kind": "test",
 				"isDefault": true
 			}
-		}
+		},
+		{
+			"label": "Lint",
+			"type": "npm",
+			"script": "lint",
+			"problemMatcher": "$eslint-stylish"
+		},
+		{
+			"label": "Type Check",
+			"type": "npm",
+			"script": "typecheck",
+            "problemMatcher": "$tsc",
+        }
 	]
 }

@@ -8,7 +8,9 @@
   "repository": "https://github.com/TheOrderbookDEX/orderbook-dex-v1.git",
   "scripts": {
     "prepare": "gulp",
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "eslint . --ext .ts",
+    "typecheck": "tsc"
   },
   "dependencies": {
     "@openzeppelin/contracts": "4.7.3",
