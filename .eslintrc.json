@@ -11,7 +11,10 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": "dist/**",
+  "ignorePatterns": [
+    "src/**",
+    "dist/**"
+  ],
   "rules": {
     "@typescript-eslint/no-floating-promises": "error"
   }
