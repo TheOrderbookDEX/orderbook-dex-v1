@@ -1,7 +1,7 @@
 import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
-import { Account, AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { Account, AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { formatValue, Transaction, ZERO_ADDRESS } from '@theorderbookdex/abi2ts-lib';
+import { formatValue, Transaction, ZERO_ADDRESS } from '@frugal-wizard/abi2ts-lib';
 
 export enum TransferTo {
     ZERO_ADDRESS = 'zeroAddress',

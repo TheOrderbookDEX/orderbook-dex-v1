@@ -1,5 +1,5 @@
-import { abiencode, formatValue, MAX_UINT32, Transaction } from '@theorderbookdex/abi2ts-lib';
-import { AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { abiencode, formatValue, MAX_UINT32, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { ClaimOrderResult } from '@theorderbookdex/orderbook-dex-operator/dist/interfaces/IOperator';
 import { ClaimOrderAction } from '../action/ClaimOrderAction';
 import { Orders } from '../state/Orders';

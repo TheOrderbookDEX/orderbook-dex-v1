@@ -1,8 +1,8 @@
-import { AddContextFunction, BaseTestContext, TestScenario, TestScenarioProperties } from '@theorderbookdex/contract-test-helper';
+import { AddContextFunction, BaseTestContext, TestScenario, TestScenarioProperties } from '@frugal-wizard/contract-test-helper';
 import { OrderbookV1 } from '../../src/OrderbookV1';
 import { ERC20Mock } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20Mock';
-import { AddressBook } from '@theorderbookdex/addressbook/dist/AddressBook';
-import { formatValue, parseValue } from '@theorderbookdex/abi2ts-lib';
+import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
+import { formatValue, parseValue } from '@frugal-wizard/abi2ts-lib';
 
 export interface DeployOrderbookContext extends BaseTestContext {
     readonly addressBook: AddressBook;

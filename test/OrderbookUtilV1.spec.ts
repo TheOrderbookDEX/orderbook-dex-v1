@@ -1,4 +1,4 @@
-import { DefaultOverrides } from '@theorderbookdex/abi2ts-lib';
+import { DefaultOverrides } from '@frugal-wizard/abi2ts-lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 

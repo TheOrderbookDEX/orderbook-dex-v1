@@ -1,5 +1,5 @@
-import { formatValue, MAX_UINT256, MAX_UINT32, MAX_UINT8 } from '@theorderbookdex/abi2ts-lib';
-import { Account, ConfigurableDescriber } from '@theorderbookdex/contract-test-helper';
+import { formatValue, MAX_UINT256, MAX_UINT32, MAX_UINT8 } from '@frugal-wizard/abi2ts-lib';
+import { Account, ConfigurableDescriber } from '@frugal-wizard/contract-test-helper';
 import { CancelOrderAction } from '../action/CancelOrderAction';
 import { CancelOrderUsingPuppetAction } from '../action/CancelOrderUsingPuppetAction';
 import { ClaimOrderAction } from '../action/ClaimOrderAction';

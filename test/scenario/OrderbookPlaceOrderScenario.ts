@@ -1,8 +1,8 @@
 import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
-import { AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { describeOrderType, OrderType } from '../state/OrderType';
 import { PlaceOrderAction } from '../action/PlaceOrderAction';
-import { formatValue, Transaction } from '@theorderbookdex/abi2ts-lib';
+import { formatValue, Transaction } from '@frugal-wizard/abi2ts-lib';
 
 export interface OrderbookPlaceOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
     readonly orderType: OrderType;

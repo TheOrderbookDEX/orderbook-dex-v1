@@ -1,5 +1,5 @@
-import { ContractError, formatValue, parseValue } from '@theorderbookdex/abi2ts-lib';
-import { AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { ContractError, formatValue, parseValue } from '@frugal-wizard/abi2ts-lib';
+import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { IOperator } from '@theorderbookdex/orderbook-dex-operator/dist/interfaces/IOperator';
 import { Operator } from '@theorderbookdex/orderbook-dex-operator/dist/Operator';
 import { OperatorLogicRegistry } from '@theorderbookdex/orderbook-dex-operator/dist/OperatorLogicRegistry';

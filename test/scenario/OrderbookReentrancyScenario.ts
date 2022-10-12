@@ -1,11 +1,11 @@
 import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
-import { AddContextFunction, describeError, TestError } from '@theorderbookdex/contract-test-helper';
+import { AddContextFunction, describeError, TestError } from '@frugal-wizard/contract-test-helper';
 import { Token } from '../state/Token';
 import { Puppet } from '@theorderbookdex/orderbook-dex/dist/testing/Puppet';
-import { AddressBook } from '@theorderbookdex/addressbook/dist/AddressBook';
+import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
 import { Orders } from '../state/Orders';
 import { Callable, ERC20ForReentrancyTesting } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20ForReentrancyTesting';
-import { parseValue, Transaction } from '@theorderbookdex/abi2ts-lib';
+import { parseValue, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { OrderOwner, SpecialAccount } from '../state/Order';
 import { ReentrancyAction } from '../action/ReentrancyAction';
 

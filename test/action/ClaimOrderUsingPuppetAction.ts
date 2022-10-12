@@ -3,7 +3,7 @@ import { Orders } from '../state/Orders';
 import { OrderbookV1 } from '../../src/OrderbookV1';
 import { ReentrancyAction, ReentrancyActionProperties } from './ReentrancyAction';
 import { OrderbookReentrancyContext } from '../scenario/OrderbookReentrancyScenario';
-import { MAX_UINT32 } from '@theorderbookdex/abi2ts-lib';
+import { MAX_UINT32 } from '@frugal-wizard/abi2ts-lib';
 
 export interface ClaimOrderUsingPuppetActionProperties extends ReentrancyActionProperties {
     readonly orderType: OrderType;

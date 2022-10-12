@@ -2,7 +2,7 @@
 
 pragma solidity 0.8.15;
 
-import { IAddressBook } from "@theorderbookdex/addressbook/contracts/interfaces/IAddressBook.sol";
+import { IAddressBook } from "@frugal-wizard/addressbook/contracts/interfaces/IAddressBook.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { IOrderbookV1 } from "./interfaces/IOrderbookV1.sol";
 import { IOrderbookFactoryV1 } from "./interfaces/IOrderbookFactoryV1.sol";

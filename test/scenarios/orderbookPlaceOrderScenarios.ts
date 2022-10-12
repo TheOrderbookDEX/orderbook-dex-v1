@@ -1,4 +1,4 @@
-import { applySetupActions, combinations, generatorChain, permutations, range, repetitions } from '@theorderbookdex/contract-test-helper';
+import { applySetupActions, combinations, generatorChain, permutations, range, repetitions } from '@frugal-wizard/contract-test-helper';
 import { EXHAUSTIVE } from '../config';
 import { describer } from '../describer/describer';
 import { OrderbookPlaceOrderScenario } from '../scenario/OrderbookPlaceOrderScenario';
@@ -9,7 +9,7 @@ import { FillAction } from '../action/FillAction';
 import { CancelOrderAction } from '../action/CancelOrderAction';
 import { InvalidAmount } from '../../src/OrderbookV1';
 import { InvalidPrice } from '../../src/OrderbookV1';
-import { parseValue } from '@theorderbookdex/abi2ts-lib';
+import { parseValue } from '@frugal-wizard/abi2ts-lib';
 
 export const orderbookPlaceOrderScenarios: [string, Iterable<OrderbookPlaceOrderScenario>][] = [];
 

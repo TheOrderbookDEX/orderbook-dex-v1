@@ -1,8 +1,8 @@
-import { DefaultOverrides } from '@theorderbookdex/abi2ts-lib';
+import { DefaultOverrides } from '@frugal-wizard/abi2ts-lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { expect } from 'chai';
-import { describeError, is, range } from '@theorderbookdex/contract-test-helper';
+import { describeError, is, range } from '@frugal-wizard/contract-test-helper';
 import { deployOrderbookScenarios } from './scenarios/deployOrderbookScenarios';
 import { orderbookPlaceOrderScenarios } from './scenarios/orderbookPlaceOrderScenarios';
 import { orderbookFillScenarios } from './scenarios/orderbookFillScenarios';

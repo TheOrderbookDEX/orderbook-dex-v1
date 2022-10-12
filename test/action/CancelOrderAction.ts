@@ -2,7 +2,7 @@ import { OrderType } from '../state/OrderType';
 import { OrderbookAction, OrderbookActionProperties } from './OrderbookAction';
 import { Orders } from '../state/Orders';
 import { OrderbookContext } from '../scenario/OrderbookScenario';
-import { MAX_UINT32 } from '@theorderbookdex/abi2ts-lib';
+import { MAX_UINT32 } from '@frugal-wizard/abi2ts-lib';
 
 export interface CancelOrderActionProperties extends OrderbookActionProperties {
     readonly orderType: OrderType;

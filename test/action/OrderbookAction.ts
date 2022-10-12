@@ -1,4 +1,4 @@
-import { TestSetupAction, TestSetupActionProperties } from '@theorderbookdex/contract-test-helper';
+import { TestSetupAction, TestSetupActionProperties } from '@frugal-wizard/contract-test-helper';
 import { OrderbookContext } from '../scenario/OrderbookScenario';
 
 export type OrderbookActionProperties = TestSetupActionProperties;

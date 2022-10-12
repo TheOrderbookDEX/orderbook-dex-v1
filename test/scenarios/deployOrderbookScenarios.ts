@@ -1,8 +1,8 @@
 import { DeployOrderbookScenario, DeployOrderbookScenarioProperties } from '../scenario/DeployOrderbookScenario';
-import { generatorChain } from '@theorderbookdex/contract-test-helper';
+import { generatorChain } from '@frugal-wizard/contract-test-helper';
 import { describer } from '../describer/describer';
 import { InvalidAddressBook, InvalidContractSize, InvalidPriceTick, InvalidTokenPair } from '../../src/OrderbookV1';
-import { parseValue } from '@theorderbookdex/abi2ts-lib';
+import { parseValue } from '@frugal-wizard/abi2ts-lib';
 
 export const deployOrderbookScenarios: Iterable<DeployOrderbookScenario> = generatorChain(function*(): Iterable<DeployOrderbookScenarioProperties> {
     yield { describer };

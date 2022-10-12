@@ -1,7 +1,7 @@
-import { DefaultOverrides } from '@theorderbookdex/abi2ts-lib';
+import { DefaultOverrides } from '@frugal-wizard/abi2ts-lib';
 import chai, { expect } from 'chai';
 import chaiAsPromised from 'chai-as-promised';
-import { describeError, is } from '@theorderbookdex/contract-test-helper';
+import { describeError, is } from '@frugal-wizard/contract-test-helper';
 import { BoughtAtMarket, Failed, OrderCanceled, OrderClaimed, OrderTransfered, PlacedBuyOrder, PlacedSellOrder, SoldAtMarket } from '../src/OperatorLogicV1';
 import { operatorBuyAtMarketScenarios } from './scenarios/operatorBuyAtMarketScenarios';
 import { operatorCancelOrderScenarios } from './scenarios/operatorCancelOrderScenarios';

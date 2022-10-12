@@ -1,5 +1,5 @@
-import { abiencode, formatValue, Transaction } from '@theorderbookdex/abi2ts-lib';
-import { Account, AddContextFunction } from '@theorderbookdex/contract-test-helper';
+import { abiencode, formatValue, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { Account, AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { TransferOrderResult } from '@theorderbookdex/orderbook-dex-operator/dist/interfaces/IOperator';
 import { Orders } from '../state/Orders';
 import { describeOrderType, OrderType } from '../state/OrderType';
