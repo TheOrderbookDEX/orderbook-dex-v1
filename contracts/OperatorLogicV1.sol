@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: BUSL-1.1
 
-pragma solidity 0.8.15;
+pragma solidity 0.8.17;
 
 import { IOrderbookV1, OrderType, Order } from "./interfaces/IOrderbookV1.sol";
 import { OrderbookUtilV1 } from "./utils/OrderbookUtilV1.sol";
