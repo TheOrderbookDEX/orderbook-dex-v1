@@ -537,12 +537,12 @@ contract OrderbookV1 is IOrderbookV1 {
         return _addressBook;
     }
 
-    function tradedToken() external view returns (IERC20) {
-        return _tradedToken;
+    function tradedToken() external view returns (address) {
+        return address(_tradedToken);
     }
 
-    function baseToken() external view returns (IERC20) {
-        return _baseToken;
+    function baseToken() external view returns (address) {
+        return address(_baseToken);
     }
 
     function contractSize() external view returns (uint256) {

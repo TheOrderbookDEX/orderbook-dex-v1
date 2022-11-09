@@ -7,76 +7,6 @@ import { IAddressBook } from "@frugal-wizard/addressbook/contracts/interfaces/IA
 import { IOrderbook } from "@theorderbookdex/orderbook-dex/contracts/interfaces/IOrderbook.sol";
 
 /**
- * Order type.
- */
-enum OrderType {
-    SELL,
-    BUY
-}
-
-/**
- * Price point data.
- */
-struct PricePoint {
-    /**
-     * The id of the last order placed.
-     *
-     * This start at zero and increases sequentially.
-     */
-    uint32 lastOrderId;
-
-    /**
-     * The id of the last order placed that has not been deleted.
-     */
-    uint32 lastActualOrderId;
-
-    /**
-     * The total amount of contracts placed.
-     */
-    uint64 totalPlaced;
-
-    /**
-     * The total amount of contracts filled.
-     */
-    uint64 totalFilled;
-}
-
-/**
- * Order data.
- */
-struct Order {
-    /**
-     * The id of the owner of the order.
-     */
-    uint40 owner;
-
-    /**
-     * The amount of contracts placed by the order.
-     */
-    uint32 amount;
-
-    /**
-     * The amount of contracts claimed in the order.
-     */
-    uint32 claimed;
-
-    /**
-     * The total amount of contracts placed before the order.
-     */
-    uint64 totalPlacedBeforeOrder;
-
-    /**
-     * The id of the order placed before this that has not been deleted.
-     */
-    uint32 prevOrderId;
-
-    /**
-     * The id of the next order placed after this that has not been deleted.
-     */
-    uint32 nextOrderId;
-}
-
-/**
  * Orderbook exchange for a token pair.
  *
  * While still possible, this contract is not designed to be interacted directly by the user.
@@ -203,12 +133,12 @@ interface IOrderbookV1 is IOrderbook {
      *
      * Emits a {Placed} event.
      *
-     * @param orderType the order type
-     * @param price     the price point
-     * @param amount    the amount of contracts
-     * @return          the id of the order
+     * @param  orderType the order type
+     * @param  price     the price point
+     * @param  amount    the amount of contracts
+     * @return orderId   the id of the order
      */
-    function placeOrder(OrderType orderType, uint256 price, uint32 amount) external returns (uint32);
+    function placeOrder(OrderType orderType, uint256 price, uint32 amount) external returns (uint32 orderId);
 
     /**
      * Fill orders.
@@ -301,91 +231,91 @@ interface IOrderbookV1 is IOrderbook {
     function addressBook() external view returns (IAddressBook);
 
     /**
-     * The token being traded.
-     *
-     * @return  the token being traded
-     */
-    function tradedToken() external view returns (IERC20);
-
-    /**
-     * The token given in exchange and used for pricing.
-     *
-     * @return  the token given in exchange and used for pricing
-     */
-    function baseToken() external view returns (IERC20);
-
-    /**
-     * The size of a contract in tradedToken.
-     *
-     * @return  the size of a contract in tradedToken
-     */
-    function contractSize() external view returns (uint256);
-
-    /**
-     * The price tick in baseToken.
-     *
-     * All prices are multiples of this value.
-     *
-     * @return  the price tick in baseToken
-     */
-    function priceTick() external view returns (uint256);
-
-    /**
-     * The ask price in baseToken.
-     *
-     * @return  the ask price in baseToken
-     */
-    function askPrice() external view returns (uint256);
-
-    /**
-     * The bid price in baseToken.
-     *
-     * @return  the bid price in baseToken
-     */
-    function bidPrice() external view returns (uint256);
-
-    /**
-     * The next available sell price point.
-     *
-     * @param price an available sell price point
-     * @return      the next available sell price point
-     */
-    function nextSellPrice(uint256 price) external view returns (uint256);
-
-    /**
-     * The next available buy price point.
-     *
-     * @param price an available buy price point
-     * @return      the next available buy price point
-     */
-    function nextBuyPrice(uint256 price) external view returns (uint256);
-
-    /**
      * The data of a price point.
      *
-     * @param orderType the order type
-     * @param price     the price point
-     * @return          the data
+     * @param  orderType  the order type
+     * @param  price      the price point
+     * @return pricePoint the data
      */
-    function pricePoint(OrderType orderType, uint256 price) external view returns (PricePoint memory);
+    function pricePoint(OrderType orderType, uint256 price) external view returns (PricePoint memory pricePoint);
 
     /**
      * The data of an order.
      *
-     * @param orderType the order type
-     * @param price     the price point
-     * @param orderId   the id of the order
-     * @return          the data
+     * @param  orderType the order type
+     * @param  price     the price point
+     * @param  orderId   the id of the order
+     * @return order     the data
      */
-    function order(OrderType orderType, uint256 price, uint32 orderId) external view returns (Order memory);
+    function order(OrderType orderType, uint256 price, uint32 orderId) external view returns (Order memory order);
+}
+
+/**
+ * Order type.
+ */
+enum OrderType {
+    SELL,
+    BUY
+}
+
+/**
+ * Price point data.
+ */
+struct PricePoint {
+    /**
+     * The id of the last order placed.
+     *
+     * This start at zero and increases sequentially.
+     */
+    uint32 lastOrderId;
 
     /**
-     * The orderbook version.
-     *
-     * From right to left, the first two digits is the patch version, the second two digits the minor version,
-     * and the rest is the major version, for example the value 10203 corresponds to version 1.2.3.
-     *
-     * @return the orderbook version
+     * The id of the last order placed that has not been deleted.
      */
-    function version() external pure returns (uint32);
+    uint32 lastActualOrderId;
+
+    /**
+     * The total amount of contracts placed.
+     */
+    uint64 totalPlaced;
+
+    /**
+     * The total amount of contracts filled.
+     */
+    uint64 totalFilled;
+}
+
+/**
+ * Order data.
+ */
+struct Order {
+    /**
+     * The id of the owner of the order.
+     */
+    uint40 owner;
+
+    /**
+     * The amount of contracts placed by the order.
+     */
+    uint32 amount;
+
+    /**
+     * The amount of contracts claimed in the order.
+     */
+    uint32 claimed;
+
+    /**
+     * The total amount of contracts placed before the order.
+     */
+    uint64 totalPlacedBeforeOrder;
+
+    /**
+     * The id of the order placed before this that has not been deleted.
+     */
+    uint32 prevOrderId;
+
+    /**
+     * The id of the next order placed after this that has not been deleted.
+     */
+    uint32 nextOrderId;
 }
