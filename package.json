@@ -15,7 +15,7 @@
   "dependencies": {
     "@frugal-wizard/abi2ts-lib": "^0.4.0",
     "@frugal-wizard/addressbook": "^1.2.1",
-    "@openzeppelin/contracts": "4.7.3",
+    "@openzeppelin/contracts": "4.8.0",
     "@theorderbookdex/orderbook-dex": "1.0.0-rc.6",
     "@theorderbookdex/orderbook-dex-operator": "1.0.0-rc.7"
   },
