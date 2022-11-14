@@ -20,9 +20,14 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
     IAddressBook private immutable _addressBook;
 
     /**
-     * Block number when orderbook was created.
+     * Total number of orderbooks created by this factory.
      */
-    mapping(address => uint256) private _blockNumber;
+    uint256 private _totalCreated;
+
+    /**
+     * Orderbooks by index.
+     */
+    mapping(uint256 => IOrderbookV1) _orderbooks;
 
     /**
      * Constructor.
@@ -30,6 +35,9 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
      * @param addressBook_ the address book used by the factory
      */
     constructor(IAddressBook addressBook_) {
+        if (address(addressBook_) == address(0)) {
+            revert InvalidAddressBook();
+        }
         _addressBook = addressBook_;
     }
 
@@ -39,17 +47,30 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
         uint256 contractSize,
         uint256 priceTick
     ) external returns (IOrderbookV1) {
-        IOrderbookV1 orderbook = new OrderbookV1(_addressBook, tradedToken, baseToken, contractSize, priceTick);
-        _blockNumber[address(orderbook)] = block.number;
-        emit OrderbookCreated(orderbook, tradedToken, baseToken, contractSize, priceTick);
-        return orderbook;
+        IOrderbookV1 orderbook_ = new OrderbookV1(_addressBook, tradedToken, baseToken, contractSize, priceTick);
+        _orderbooks[_totalCreated] = orderbook_;
+        _totalCreated++;
+        emit OrderbookCreated(orderbook_, tradedToken, baseToken, contractSize, priceTick);
+        return orderbook_;
     }
 
     function addressBook() external view returns (IAddressBook) {
         return _addressBook;
     }
 
-    function blockNumber(address orderbook) external view returns (uint256) {
-        return _blockNumber[orderbook];
+    function totalCreated() external view returns (uint256) {
+        return _totalCreated;
+    }
+
+    function orderbook(uint256 index) external view returns(IOrderbookV1) {
+        return _orderbooks[index];
+    }
+
+    function orderbooks(uint256 index, uint256 length) external view returns(IOrderbookV1[] memory) {
+        IOrderbookV1[] memory orderbooks_ = new IOrderbookV1[](length);
+        for (uint256 i = 0; i < length; i++) {
+            orderbooks_[i] = _orderbooks[index + i];
+        }
+        return orderbooks_;
     }
 }

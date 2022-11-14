@@ -16,6 +16,9 @@ import { PlaceOrderScenario } from '../scenario/PlaceOrder';
 import { ReentrancyScenario } from '../scenario/Reentrancy';
 import { TransferOrderScenario } from '../scenario/TransferOrder';
 import { describeOrderType, OrderType } from '../state/OrderType';
+import { DeployOrderbookFactoryScenario } from '../scenario/DeployOrderbookFactory';
+import { CreateOrderbookScenario } from '../scenario/CreateOrderbook';
+import { CreateOrderbookAction } from '../action/CreateOrderbook';
 
 export interface OrderbookTestDescriberConfig {
     readonly hideContractSize?: boolean;
@@ -299,7 +302,7 @@ describer.addDescriber(DeployOrderbookScenario, function({
     if (!config.hidePriceTick) {
         settings.push(`price tick at ${formatValue(priceTick)}`);
     }
-    return `deploy${ settings.length ? ` with ${ settings.join(' and ') }` : '' }`;
+    return `deploy orderbook${ settings.length ? ` with ${ settings.join(' and ') }` : '' }`;
 });
 
 describer.addDescriber(PlaceOrderScenario, function({
@@ -549,6 +552,73 @@ describer.addDescriber(ReentrancyScenario, function({
     }
     if (!hidePriceTick) {
         description.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    return description.join(' ');
+});
+
+describer.addDescriber(DeployOrderbookFactoryScenario, function({
+    addressBookAddress
+}) {
+    const description = ['deploy factory'];
+    const settings = [];
+    if (addressBookAddress) {
+        settings.push(`addressBook at ${addressBookAddress}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
+    }
+    return description.join(' ');
+});
+
+describer.addDescriber(CreateOrderbookAction, function({
+    tradedTokenAddress, baseTokenAddress, contractSize, priceTick
+}, config = {}) {
+    const description = ['create orderbook'];
+    const settings = [];
+    if (tradedTokenAddress) {
+        settings.push(`tradedToken at ${tradedTokenAddress}`);
+    }
+    if (baseTokenAddress) {
+        settings.push(`baseToken at ${baseTokenAddress}`);
+    }
+    if (!config.hideContractSize) {
+        settings.push(`contract size at ${formatValue(contractSize)}`);
+    }
+    if (!config.hidePriceTick) {
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
+    }
+    return description.join(' ');
+});
+
+describer.addDescriber(CreateOrderbookScenario, function({
+    tradedTokenAddress, baseTokenAddress, contractSize, priceTick, setupActions
+}, config = {}) {
+    const description = ['create orderbook'];
+    const settings = [];
+    if (tradedTokenAddress) {
+        settings.push(`tradedToken at ${tradedTokenAddress}`);
+    }
+    if (baseTokenAddress) {
+        settings.push(`baseToken at ${baseTokenAddress}`);
+    }
+    if (!config.hideContractSize) {
+        settings.push(`contract size at ${formatValue(contractSize)}`);
+    }
+    if (!config.hidePriceTick) {
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
+    }
+    if (setupActions.length) {
+        description.push('after');
+        description.push(setupActions.map(({ description }) => description).join(' and '));
     }
     return description.join(' ');
 });

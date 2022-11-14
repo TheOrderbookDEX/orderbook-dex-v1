@@ -22,12 +22,17 @@ interface IOrderbookFactoryV1 {
      * @param priceTick    the price tick in baseToken
      */
     event OrderbookCreated(
-        IOrderbookV1   orderbook,
-        IERC20 indexed tradedToken,
-        IERC20 indexed baseToken,
-        uint256        contractSize,
-        uint256        priceTick
+        IOrderbookV1 indexed orderbook,
+        IERC20       indexed tradedToken,
+        IERC20       indexed baseToken,
+        uint256              contractSize,
+        uint256              priceTick
     );
+
+    /**
+     * Error thrown when trying to deploy a factory with an invalid address book.
+     */
+    error InvalidAddressBook();
 
     /**
      * Create an orderbook.
@@ -52,12 +57,30 @@ interface IOrderbookFactoryV1 {
     function addressBook() external view returns (IAddressBook addressBook);
 
     /**
-     * Block number when an orderbook was created.
+     * Total number of orderbooks created by this factory.
      *
-     * Returns 0 if the orderbook was not created by this factory.
-     *
-     * @param  orderbook   the address of the orderbook
-     * @return blockNumber the block number when the orderbook was created
+     * @return totalCreated total number of orderbooks created by this factory
      */
-    function blockNumber(address orderbook) external view returns (uint256 blockNumber);
+    function totalCreated() external view returns (uint256 totalCreated);
+
+    /**
+     * The orderbook created by this factory at a specific index.
+     *
+     * Index is not validated by this function, it's the caller responsibility to verify that the index is valid.
+     *
+     * @param  index     the index to fetch
+     * @return orderbook the orderbook created at index provided
+     */
+    function orderbook(uint256 index) external view returns(IOrderbookV1 orderbook);
+
+    /**
+     * The orderbooks created by this factory at a specific index range.
+     *
+     * Range is not validated by this function, it's the caller responsibility to verify that the range is valid.
+     *
+     * @param  index      the start index
+     * @param  length     the range length
+     * @return orderbooks the orderbook created at index provided
+     */
+    function orderbooks(uint256 index, uint256 length) external view returns(IOrderbookV1[] memory orderbooks);
 }
