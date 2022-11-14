@@ -44,7 +44,7 @@ describe('OrderbookFactoryV1', () => {
         }
     });
 
-    describe.only('createOrderbook', () => {
+    describe('createOrderbook', () => {
         for (const scenario of createOrderbookScenarios) {
             scenario.describe(({ it }) => {
                 if (scenario.expectedError) {
