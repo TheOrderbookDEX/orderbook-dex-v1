@@ -1,17 +1,17 @@
-import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
+import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './Orderbook';
 import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { PlaceOrderAction } from '../action/PlaceOrderAction';
+import { PlaceOrderAction } from '../action/PlaceOrder';
 import { formatValue, Transaction } from '@frugal-wizard/abi2ts-lib';
 
-export interface OrderbookPlaceOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
+export interface PlaceOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly amount: bigint;
     readonly allowance?: bigint;
 }
 
-export class OrderbookPlaceOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, bigint> {
+export class PlaceOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, bigint> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly amount: bigint;
@@ -23,7 +23,7 @@ export class OrderbookPlaceOrderScenario extends OrderbookScenario<OrderbookCont
         amount,
         allowance,
         ...rest
-    }: OrderbookPlaceOrderScenarioProperties) {
+    }: PlaceOrderScenarioProperties) {
         super(rest);
         this.orderType = orderType;
         this.price = price;

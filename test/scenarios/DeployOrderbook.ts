@@ -1,4 +1,4 @@
-import { DeployOrderbookScenario, DeployOrderbookScenarioProperties } from '../scenario/DeployOrderbookScenario';
+import { DeployOrderbookScenario, DeployOrderbookScenarioProperties } from '../scenario/DeployOrderbook';
 import { generatorChain } from '@frugal-wizard/contract-test-helper';
 import { describer } from '../describer/describer';
 import { InvalidAddressBook, InvalidContractSize, InvalidPriceTick, InvalidTokenPair } from '../../src/OrderbookV1';

@@ -1,7 +1,7 @@
 import { OrderType } from '../state/OrderType';
-import { OrderbookAction, OrderbookActionProperties } from './OrderbookAction';
+import { OrderbookAction, OrderbookActionProperties } from './Orderbook';
 import { Orders } from '../state/Orders';
-import { OrderbookContext } from '../scenario/OrderbookScenario';
+import { OrderbookContext } from '../scenario/Orderbook';
 import { MAX_UINT256, MAX_UINT8 } from '@frugal-wizard/abi2ts-lib';
 
 export interface FillActionProperties extends OrderbookActionProperties {

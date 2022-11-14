@@ -1,4 +1,4 @@
-import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
+import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './Orderbook';
 import { Account, AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { describeOrderType, OrderType } from '../state/OrderType';
 import { formatValue, Transaction, ZERO_ADDRESS } from '@frugal-wizard/abi2ts-lib';
@@ -9,18 +9,18 @@ export enum TransferTo {
 
 export type NewOwner = Account | TransferTo;
 
-export interface OrderbookTransferContext extends OrderbookContext {
+export interface TransferOrderContext extends OrderbookContext {
     readonly zeroAddress: string;
 }
 
-export interface OrderbookTransferOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookTransferContext> {
+export interface TransferOrderScenarioProperties extends OrderbookScenarioProperties<TransferOrderContext> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
     readonly newOwner: NewOwner;
 }
 
-export class OrderbookTransferOrderScenario extends OrderbookScenario<OrderbookTransferContext, Transaction, void> {
+export class TransferOrderScenario extends OrderbookScenario<TransferOrderContext, Transaction, void> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
@@ -32,7 +32,7 @@ export class OrderbookTransferOrderScenario extends OrderbookScenario<OrderbookT
         orderId,
         newOwner,
         ...rest
-    }: OrderbookTransferOrderScenarioProperties) {
+    }: TransferOrderScenarioProperties) {
         super(rest);
         this.orderType = orderType;
         this.price = price;
@@ -55,11 +55,11 @@ export class OrderbookTransferOrderScenario extends OrderbookScenario<OrderbookT
         };
     }
 
-    async execute({ orderbook, [this.newOwner]: newOwner }: OrderbookTransferContext) {
+    async execute({ orderbook, [this.newOwner]: newOwner }: TransferOrderContext) {
         return await orderbook.transferOrder(this.orderType, this.price, this.orderId, newOwner);
     }
 
-    async executeStatic({ orderbook, [this.newOwner]: newOwner }: OrderbookTransferContext) {
+    async executeStatic({ orderbook, [this.newOwner]: newOwner }: TransferOrderContext) {
         return await orderbook.callStatic.transferOrder(this.orderType, this.price, this.orderId, newOwner);
     }
 

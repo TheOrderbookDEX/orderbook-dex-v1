@@ -1,17 +1,17 @@
-import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
+import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './Orderbook';
 import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { ClaimOrderAction } from '../action/ClaimOrderAction';
+import { ClaimOrderAction } from '../action/ClaimOrder';
 import { formatValue, MAX_UINT32, Transaction } from '@frugal-wizard/abi2ts-lib';
 
-export interface OrderbookClaimOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
+export interface ClaimOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
     readonly maxAmount?: bigint;
 }
 
-export class OrderbookClaimOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, bigint> {
+export class ClaimOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, bigint> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
@@ -23,7 +23,7 @@ export class OrderbookClaimOrderScenario extends OrderbookScenario<OrderbookCont
         orderId,
         maxAmount = MAX_UINT32,
         ...rest
-    }: OrderbookClaimOrderScenarioProperties) {
+    }: ClaimOrderScenarioProperties) {
         super(rest);
         this.orderType = orderType;
         this.price = price;

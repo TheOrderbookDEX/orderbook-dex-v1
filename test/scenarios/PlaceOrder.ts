@@ -1,20 +1,20 @@
 import { applySetupActions, combinations, generatorChain, permutations, range, repetitions } from '@frugal-wizard/contract-test-helper';
 import { EXHAUSTIVE } from '../config';
 import { describer } from '../describer/describer';
-import { OrderbookPlaceOrderScenario } from '../scenario/OrderbookPlaceOrderScenario';
+import { PlaceOrderScenario } from '../scenario/PlaceOrder';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { PlaceOrderAction } from '../action/PlaceOrderAction';
+import { PlaceOrderAction } from '../action/PlaceOrder';
 import { Orders } from '../state/Orders';
-import { FillAction } from '../action/FillAction';
-import { CancelOrderAction } from '../action/CancelOrderAction';
+import { FillAction } from '../action/Fill';
+import { CancelOrderAction } from '../action/CancelOrder';
 import { InvalidAmount } from '../../src/OrderbookV1';
 import { InvalidPrice } from '../../src/OrderbookV1';
 import { parseValue } from '@frugal-wizard/abi2ts-lib';
 
-export const orderbookPlaceOrderScenarios: [string, Iterable<OrderbookPlaceOrderScenario>][] = [];
+export const placeOrderScenarios: [string, Iterable<PlaceOrderScenario>][] = [];
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookPlaceOrderScenarios.push([
+    placeOrderScenarios.push([
         `place ${describeOrderType(orderType)} orders at same price`,
         generatorChain(function*() {
             yield {
@@ -93,13 +93,13 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookPlaceOrderScenario(properties);
+            yield new PlaceOrderScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookPlaceOrderScenarios.push([
+    placeOrderScenarios.push([
         `place ${describeOrderType(orderType)} orders at different prices`,
         generatorChain(function*() {
             yield {
@@ -177,13 +177,13 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookPlaceOrderScenario(properties);
+            yield new PlaceOrderScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookPlaceOrderScenarios.push([
+    placeOrderScenarios.push([
         `place ${describeOrderType(orderType)} orders with common errors`,
         generatorChain(function*() {
             yield {
@@ -218,7 +218,7 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             };
 
         }).then(function*(properties) {
-            yield new OrderbookPlaceOrderScenario(properties);
+            yield new PlaceOrderScenario(properties);
         })
     ]);
 }

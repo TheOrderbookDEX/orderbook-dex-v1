@@ -1,8 +1,8 @@
 import { OrderType } from '../state/OrderType';
-import { OrderbookAction, OrderbookActionProperties } from './OrderbookAction';
+import { OrderbookAction, OrderbookActionProperties } from './Orderbook';
 import { Orders } from '../state/Orders';
 import { Account } from '@frugal-wizard/contract-test-helper';
-import { OrderbookContext } from '../scenario/OrderbookScenario';
+import { OrderbookContext } from '../scenario/Orderbook';
 
 export interface PlaceOrderActionProperties extends OrderbookActionProperties {
     readonly account?: Account;

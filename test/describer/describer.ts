@@ -1,20 +1,20 @@
 import { formatValue, MAX_UINT256, MAX_UINT32, MAX_UINT8 } from '@frugal-wizard/abi2ts-lib';
 import { Account, ConfigurableDescriber } from '@frugal-wizard/contract-test-helper';
-import { CancelOrderAction } from '../action/CancelOrderAction';
-import { CancelOrderUsingPuppetAction } from '../action/CancelOrderUsingPuppetAction';
-import { ClaimOrderAction } from '../action/ClaimOrderAction';
-import { ClaimOrderUsingPuppetAction } from '../action/ClaimOrderUsingPuppetAction';
-import { FillAction } from '../action/FillAction';
-import { FillUsingPuppetAction } from '../action/FillUsingPuppetAction';
-import { PlaceOrderAction } from '../action/PlaceOrderAction';
-import { PlaceOrderUsingPuppetAction } from '../action/PlaceOrderUsingPuppetAction';
-import { DeployOrderbookScenario } from '../scenario/DeployOrderbookScenario';
-import { OrderbookCancelOrderScenario } from '../scenario/OrderbookCancelOrderScenario';
-import { OrderbookClaimOrderScenario } from '../scenario/OrderbookClaimOrderScenario';
-import { OrderbookFillScenario } from '../scenario/OrderbookFillScenario';
-import { OrderbookPlaceOrderScenario } from '../scenario/OrderbookPlaceOrderScenario';
-import { OrderbookReentrancyScenario } from '../scenario/OrderbookReentrancyScenario';
-import { OrderbookTransferOrderScenario } from '../scenario/OrderbookTransferOrderScenario';
+import { CancelOrderAction } from '../action/CancelOrder';
+import { CancelOrderUsingPuppetAction } from '../action/CancelOrderUsingPuppet';
+import { ClaimOrderAction } from '../action/ClaimOrder';
+import { ClaimOrderUsingPuppetAction } from '../action/ClaimOrderUsingPuppet';
+import { FillAction } from '../action/Fill';
+import { FillUsingPuppetAction } from '../action/FillUsingPuppet';
+import { PlaceOrderAction } from '../action/PlaceOrder';
+import { PlaceOrderUsingPuppetAction } from '../action/PlaceOrderUsingPuppet';
+import { DeployOrderbookScenario } from '../scenario/DeployOrderbook';
+import { CancelOrderScenario } from '../scenario/CancelOrder';
+import { ClaimOrderScenario } from '../scenario/ClaimOrder';
+import { FillScenario } from '../scenario/Fill';
+import { PlaceOrderScenario } from '../scenario/PlaceOrder';
+import { ReentrancyScenario } from '../scenario/Reentrancy';
+import { TransferOrderScenario } from '../scenario/TransferOrder';
 import { describeOrderType, OrderType } from '../state/OrderType';
 
 export interface OrderbookTestDescriberConfig {
@@ -302,7 +302,7 @@ describer.addDescriber(DeployOrderbookScenario, function({
     return `deploy${ settings.length ? ` with ${ settings.join(' and ') }` : '' }`;
 });
 
-describer.addDescriber(OrderbookPlaceOrderScenario, function({
+describer.addDescriber(PlaceOrderScenario, function({
     orderType, price, amount, setupActions, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideAmount, hideContractSize, hidePriceTick
@@ -342,7 +342,7 @@ describer.addDescriber(OrderbookPlaceOrderScenario, function({
     return description.join(' ');
 });
 
-describer.addDescriber(OrderbookFillScenario, function({
+describer.addDescriber(FillScenario, function({
     orderType, maxAmount, maxPrice, maxPricePoints, setupActions, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideAmount, hideContractSize, hidePriceTick
@@ -397,7 +397,7 @@ describer.addDescriber(OrderbookFillScenario, function({
     return description.join(' ');
 });
 
-describer.addDescriber(OrderbookClaimOrderScenario, function({
+describer.addDescriber(ClaimOrderScenario, function({
     orderType, price, orderId, maxAmount, setupActions, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideOrderId, hideAmount, hideContractSize, hidePriceTick
@@ -446,7 +446,7 @@ describer.addDescriber(OrderbookClaimOrderScenario, function({
     return description.join(' ');
 });
 
-describer.addDescriber(OrderbookCancelOrderScenario, function({
+describer.addDescriber(CancelOrderScenario, function({
     orderType, price, orderId, setupActions, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideOrderId, hideContractSize, hidePriceTick
@@ -484,7 +484,7 @@ describer.addDescriber(OrderbookCancelOrderScenario, function({
     return description.join(' ');
 });
 
-describer.addDescriber(OrderbookTransferOrderScenario, function({
+describer.addDescriber(TransferOrderScenario, function({
     orderType, price, orderId, newOwner, setupActions, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideOrderId, hideContractSize, hidePriceTick
@@ -523,7 +523,7 @@ describer.addDescriber(OrderbookTransferOrderScenario, function({
     return description.join(' ');
 });
 
-describer.addDescriber(OrderbookReentrancyScenario, function({
+describer.addDescriber(ReentrancyScenario, function({
     compromisedToken, mainAction, reentrantAction, setupActions, contractSize, priceTick
 }, {
     hideContractSize, hidePriceTick

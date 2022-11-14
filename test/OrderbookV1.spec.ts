@@ -3,14 +3,14 @@ import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { expect } from 'chai';
 import { describeError, is, range } from '@frugal-wizard/contract-test-helper';
-import { deployOrderbookScenarios } from './scenarios/deployOrderbookScenarios';
-import { orderbookPlaceOrderScenarios } from './scenarios/orderbookPlaceOrderScenarios';
-import { orderbookFillScenarios } from './scenarios/orderbookFillScenarios';
-import { orderbookClaimOrderScenarios } from './scenarios/orderbookClaimOrderScenario';
-import { orderbookCancelOrderScenarios } from './scenarios/orderbookCancelOrderScenarios';
+import { deployOrderbookScenarios } from './scenarios/DeployOrderbook';
+import { placeOrderScenarios } from './scenarios/PlaceOrder';
+import { fillScenarios } from './scenarios/Fill';
+import { claimOrderScenarios } from './scenarios/ClaimOrder';
+import { cancelOrderScenarios } from './scenarios/CancelOrder';
 import { Canceled, Filled, Order, Placed, PricePoint } from '../src/OrderbookV1';
-import { orderbookTransferOrderScenarios } from './scenarios/orderbookTransferOrderScenarios';
-import { orderbookReentrancyScenarios } from './scenarios/orderbookReentrancyScenarios';
+import { transferOrderScenarios } from './scenarios/TransferOrder';
+import { reentrancyScenarios } from './scenarios/Reentrancy';
 import { OrderType } from './state/OrderType';
 
 chai.use(chaiAsPromised);
@@ -82,7 +82,7 @@ describe('OrderbookV1', () => {
     });
 
     describe('placeOrder', () => {
-        for (const [ description, scenarios ] of orderbookPlaceOrderScenarios) {
+        for (const [ description, scenarios ] of placeOrderScenarios) {
             describe(description, () => {
                 for (const scenario of scenarios) {
                     scenario.describe(({ it }) => {
@@ -262,7 +262,7 @@ describe('OrderbookV1', () => {
     });
 
     describe('fill', () => {
-        for (const [ description, scenarios ] of orderbookFillScenarios) {
+        for (const [ description, scenarios ] of fillScenarios) {
             describe(description, () => {
                 for (const scenario of scenarios) {
                     scenario.describe(({ it }) => {
@@ -384,7 +384,7 @@ describe('OrderbookV1', () => {
     });
 
     describe('claimOrder', () => {
-        for (const [ description, scenarios ] of orderbookClaimOrderScenarios) {
+        for (const [ description, scenarios ] of claimOrderScenarios) {
             describe(description, () => {
                 for (const scenario of scenarios) {
                     scenario.describe(({ it }) => {
@@ -482,7 +482,7 @@ describe('OrderbookV1', () => {
     });
 
     describe('cancelOrder', () => {
-        for (const [ description, scenarios ] of orderbookCancelOrderScenarios) {
+        for (const [ description, scenarios ] of cancelOrderScenarios) {
             describe(description, () => {
                 for (const scenario of scenarios) {
                     scenario.describe(({ it }) => {
@@ -648,7 +648,7 @@ describe('OrderbookV1', () => {
     });
 
     describe('transfer', () => {
-        for (const [ description, scenarios ] of orderbookTransferOrderScenarios) {
+        for (const [ description, scenarios ] of transferOrderScenarios) {
             describe(description, () => {
                 for (const scenario of scenarios) {
                     scenario.describe(({ it }) => {
@@ -679,7 +679,7 @@ describe('OrderbookV1', () => {
     });
 
     describe('reentrancy', () => {
-        for (const [ description, scenarios ] of orderbookReentrancyScenarios) {
+        for (const [ description, scenarios ] of reentrancyScenarios) {
             describe(description, () => {
                 for (const scenario of scenarios) {
                     scenario.describe(({ it }) => {

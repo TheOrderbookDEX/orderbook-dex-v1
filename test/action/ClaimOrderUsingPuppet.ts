@@ -1,38 +1,38 @@
 import { OrderType } from '../state/OrderType';
-import { OrderbookAction, OrderbookActionProperties } from './OrderbookAction';
 import { Orders } from '../state/Orders';
 import { OrderbookV1 } from '../../src/OrderbookV1';
+import { ReentrancyAction, ReentrancyActionProperties } from './Reentrancy';
+import { ReentrancyContext } from '../scenario/Reentrancy';
 import { MAX_UINT32 } from '@frugal-wizard/abi2ts-lib';
-import { OrderbookReentrancyContext } from '../scenario/OrderbookReentrancyScenario';
 
-export interface CancelOrderUsingPuppetActionProperties extends OrderbookActionProperties {
+export interface ClaimOrderUsingPuppetActionProperties extends ReentrancyActionProperties {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
-    readonly maxLastOrderId?: bigint;
+    readonly maxAmount?: bigint;
 }
 
-export class CancelOrderUsingPuppetAction extends OrderbookAction {
+export class ClaimOrderUsingPuppetAction extends ReentrancyAction {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
-    readonly maxLastOrderId: bigint;
+    readonly maxAmount: bigint;
 
     constructor({
         orderType,
         price,
         orderId,
-        maxLastOrderId = MAX_UINT32,
+        maxAmount = MAX_UINT32,
         ...rest
-    }: CancelOrderUsingPuppetActionProperties) {
+    }: ClaimOrderUsingPuppetActionProperties) {
         super(rest);
         this.orderType = orderType;
         this.price = price;
         this.orderId = orderId;
-        this.maxLastOrderId = maxLastOrderId;
+        this.maxAmount = maxAmount;
     }
 
-    async execute(ctx: OrderbookReentrancyContext) {
+    async execute(ctx: ReentrancyContext) {
         const { puppet, orderbook } = ctx;
         await puppet.call(orderbook, this.encode());
     }
@@ -42,13 +42,14 @@ export class CancelOrderUsingPuppetAction extends OrderbookAction {
     }
 
     encode(): string {
-        return OrderbookV1.encode.cancelOrder(this.orderType, this.price, this.orderId, this.maxLastOrderId);
+        const { orderType, price, orderId, maxAmount } = this;
+        return OrderbookV1.encode.claimOrder(orderType, price, orderId, maxAmount);
     }
 
     apply<T>(state: T) {
         if (state instanceof Orders) {
-            const { orderType, price, orderId } = this;
-            return state.cancel(orderType, price, orderId);
+            const { orderType, price, orderId, maxAmount } = this;
+            return state.claim(orderType, price, orderId, maxAmount);
         } else {
             return state;
         }

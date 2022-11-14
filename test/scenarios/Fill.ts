@@ -1,19 +1,19 @@
 import { parseValue } from '@frugal-wizard/abi2ts-lib';
 import { applySetupActions, combinations, generatorChain, permutations, range, repetitions } from '@frugal-wizard/contract-test-helper';
 import { InvalidAmount, InvalidArgument } from '../../src/OrderbookV1';
-import { CancelOrderAction } from '../action/CancelOrderAction';
-import { FillAction } from '../action/FillAction';
-import { PlaceOrderAction } from '../action/PlaceOrderAction';
+import { CancelOrderAction } from '../action/CancelOrder';
+import { FillAction } from '../action/Fill';
+import { PlaceOrderAction } from '../action/PlaceOrder';
 import { EXHAUSTIVE } from '../config';
 import { describer } from '../describer/describer';
-import { OrderbookFillScenario } from '../scenario/OrderbookFillScenario';
+import { FillScenario } from '../scenario/Fill';
 import { Orders } from '../state/Orders';
 import { describeOrderType, OrderType } from '../state/OrderType';
 
-export const orderbookFillScenarios: [string, Iterable<OrderbookFillScenario>][] = [];
+export const fillScenarios: [string, Iterable<FillScenario>][] = [];
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookFillScenarios.push([
+    fillScenarios.push([
         `fill ${describeOrderType(orderType)} orders at same price`,
         generatorChain(function*() {
             yield {
@@ -92,13 +92,13 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookFillScenario(properties);
+            yield new FillScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookFillScenarios.push([
+    fillScenarios.push([
         `fill ${describeOrderType(orderType)} orders at different prices`,
         generatorChain(function*() {
             yield {
@@ -171,13 +171,13 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookFillScenario(properties);
+            yield new FillScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookFillScenarios.push([
+    fillScenarios.push([
         `fill ${describeOrderType(orderType)} orders using maxPrice`,
         generatorChain(function*() {
             yield {
@@ -212,13 +212,13 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookFillScenario(properties);
+            yield new FillScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookFillScenarios.push([
+    fillScenarios.push([
         `fill ${describeOrderType(orderType)} orders using maxPricePoints`,
         generatorChain(function*() {
             yield {
@@ -253,13 +253,13 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookFillScenario(properties);
+            yield new FillScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookFillScenarios.push([
+    fillScenarios.push([
         `fill ${describeOrderType(orderType)} orders with common errors`,
         generatorChain(function*() {
             yield {
@@ -293,7 +293,7 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             };
 
         }).then(function*(properties) {
-            yield new OrderbookFillScenario(properties);
+            yield new FillScenario(properties);
         })
     ]);
 }

@@ -1,17 +1,17 @@
 import { formatValue, MAX_UINT32, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
-import { CancelOrderAction } from '../action/CancelOrderAction';
+import { CancelOrderAction } from '../action/CancelOrder';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
+import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './Orderbook';
 
-export interface OrderbookCancelOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
+export interface CancelOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
     readonly maxLastOrderId?: bigint;
 }
 
-export class OrderbookCancelOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, bigint> {
+export class CancelOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, bigint> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
@@ -23,7 +23,7 @@ export class OrderbookCancelOrderScenario extends OrderbookScenario<OrderbookCon
         orderId,
         maxLastOrderId = MAX_UINT32,
         ...rest
-    }: OrderbookCancelOrderScenarioProperties) {
+    }: CancelOrderScenarioProperties) {
         super(rest);
         this.orderType = orderType;
         this.price = price;

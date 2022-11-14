@@ -1,4 +1,4 @@
-import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
+import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './Orderbook';
 import { AddContextFunction, describeError, TestError } from '@frugal-wizard/contract-test-helper';
 import { Token } from '../state/Token';
 import { Puppet } from '@theorderbookdex/orderbook-dex/dist/testing/Puppet';
@@ -7,25 +7,25 @@ import { Orders } from '../state/Orders';
 import { Callable, ERC20ForReentrancyTesting } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20ForReentrancyTesting';
 import { parseValue, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { OrderOwner, SpecialAccount } from '../state/Order';
-import { ReentrancyAction } from '../action/ReentrancyAction';
+import { ReentrancyAction } from '../action/Reentrancy';
 
 type ERC20ForReentrancyTestingInterface = Pick<ERC20ForReentrancyTesting, keyof ERC20ForReentrancyTesting>;
 
-export interface OrderbookReentrancyContext extends OrderbookContext {
+export interface ReentrancyContext extends OrderbookContext {
     readonly tradedToken: ERC20ForReentrancyTestingInterface;
     readonly baseToken: ERC20ForReentrancyTestingInterface;
     readonly puppet: Puppet;
     getOwnerAddress(owner: OrderOwner): string;
 }
 
-export interface OrderbookReentrancyScenarioProperties extends OrderbookScenarioProperties<OrderbookReentrancyContext> {
+export interface ReentrancyScenarioProperties extends OrderbookScenarioProperties<ReentrancyContext> {
     readonly compromisedToken: Token;
     readonly mainAction: ReentrancyAction;
     readonly reentrantAction: ReentrancyAction;
     readonly expectedErrors?: TestError[];
 }
 
-export class OrderbookReentrancyScenario extends OrderbookScenario<OrderbookReentrancyContext, Transaction, string> {
+export class ReentrancyScenario extends OrderbookScenario<ReentrancyContext, Transaction, string> {
     readonly compromisedToken: Token;
     readonly mainAction: ReentrancyAction;
     readonly reentrantAction: ReentrancyAction;
@@ -37,7 +37,7 @@ export class OrderbookReentrancyScenario extends OrderbookScenario<OrderbookReen
         reentrantAction,
         expectedErrors = [],
         ...rest
-    }: OrderbookReentrancyScenarioProperties) {
+    }: ReentrancyScenarioProperties) {
         super(rest);
         this.compromisedToken = compromisedToken;
         this.mainAction = mainAction;
@@ -55,7 +55,7 @@ export class OrderbookReentrancyScenario extends OrderbookScenario<OrderbookReen
         super.addContext(addContext);
     }
 
-    protected async _setup(): Promise<OrderbookReentrancyContext> {
+    protected async _setup(): Promise<ReentrancyContext> {
         const ctx = await super._setup();
         const { tradedToken, baseToken, addressBook } = ctx;
         const puppet = await Puppet.deploy();
@@ -92,7 +92,7 @@ export class OrderbookReentrancyScenario extends OrderbookScenario<OrderbookReen
         return await this._setup();
     }
 
-    async afterSetup(ctx: OrderbookReentrancyContext) {
+    async afterSetup(ctx: ReentrancyContext) {
         await super.afterSetup(ctx);
         const { puppet, orderbook } = ctx;
         await this.mainAction.approve(ctx);
@@ -100,11 +100,11 @@ export class OrderbookReentrancyScenario extends OrderbookScenario<OrderbookReen
         await ctx[this.compromisedToken].callBeforeTransfer(new Callable(puppet, Puppet.encode.call(orderbook, this.reentrantAction.encode())));
     }
 
-    async execute({ puppet, orderbook }: OrderbookReentrancyContext) {
+    async execute({ puppet, orderbook }: ReentrancyContext) {
         return await puppet.call(orderbook, this.mainAction.encode());
     }
 
-    async executeStatic({ puppet, orderbook }: OrderbookReentrancyContext) {
+    async executeStatic({ puppet, orderbook }: ReentrancyContext) {
         return await puppet.callStatic.call(orderbook, this.mainAction.encode());
     }
 

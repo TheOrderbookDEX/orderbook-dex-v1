@@ -1,21 +1,21 @@
 import { parseValue } from '@frugal-wizard/abi2ts-lib';
-import { Account, applySetupActions, combinations, generatorChain, permutations, range, repetitions } from '@frugal-wizard/contract-test-helper';
-import { AlreadyFilled, InvalidOrderId, InvalidPrice, OrderDeleted, OverMaxLastOrderId, Unauthorized } from '../../src/OrderbookV1';
-import { CancelOrderAction } from '../action/CancelOrderAction';
-import { ClaimOrderAction } from '../action/ClaimOrderAction';
-import { FillAction } from '../action/FillAction';
-import { PlaceOrderAction } from '../action/PlaceOrderAction';
+import { Account, applySetupActions, generatorChain, range, repetitions } from '@frugal-wizard/contract-test-helper';
+import { InvalidOrderId, InvalidAmount, InvalidPrice, OrderDeleted, Unauthorized } from '../../src/OrderbookV1';
+import { CancelOrderAction } from '../action/CancelOrder';
+import { ClaimOrderAction } from '../action/ClaimOrder';
+import { FillAction } from '../action/Fill';
+import { PlaceOrderAction } from '../action/PlaceOrder';
 import { EXHAUSTIVE } from '../config';
 import { describer } from '../describer/describer';
-import { OrderbookCancelOrderScenario } from '../scenario/OrderbookCancelOrderScenario';
+import { ClaimOrderScenario } from '../scenario/ClaimOrder';
 import { Orders } from '../state/Orders';
 import { describeOrderType, OrderType } from '../state/OrderType';
 
-export const orderbookCancelOrderScenarios: [string, Iterable<OrderbookCancelOrderScenario>][] = [];
+export const claimOrderScenarios: [string, Iterable<ClaimOrderScenario>][] = [];
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookCancelOrderScenarios.push([
-        `cancel ${describeOrderType(orderType)} orders at same price`,
+    claimOrderScenarios.push([
+        `claim ${describeOrderType(orderType)} orders`,
         generatorChain(function*() {
             yield {
                 orderType,
@@ -44,8 +44,17 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
+            for (const maxAmount of range(1n, 2n)) {
+                yield {
+                    ...properties,
+                    maxAmount,
+                }
+            }
+
+        }).then(function*(properties) {
             const { describer, price } = properties;
-            const actions = [ new PlaceOrderAction({ describer, orderType, price, amount: 2n }) ];
+            const actions = [...range(EXHAUSTIVE ? 1n : 2n, 2n)].map(amount =>
+                new PlaceOrderAction({ describer, orderType, price, amount }));
             for (const setupActions of repetitions(actions, 1, 3)) {
                 yield {
                     ...properties,
@@ -54,19 +63,11 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            const { setupActions, price, orderId } = properties;
-            const orders = applySetupActions(setupActions, new Orders());
-            if (orders.has(orderType, price, orderId)) {
-                yield properties;
-            }
+            yield properties;
 
-        }).then(function*(properties) {
-            const { describer, setupActions, price, orderId } = properties;
+            const { describer, setupActions } = properties;
             const orders = applySetupActions(setupActions, new Orders());
-            const totalPlacedBeforeOrder = orders.totalPlacedBeforeOrder(orderType, price, orderId);
-            const amount = orders.get(orderType, price, orderId)?.amount ?? 0n;
-            for (const maxAmount of range(totalPlacedBeforeOrder, totalPlacedBeforeOrder + amount - 1n)) {
-                if (!maxAmount) continue;
+            for (const maxAmount of range(1n, orders.totalAvailable(orderType))) {
                 yield {
                     ...properties,
                     setupActions: [
@@ -94,11 +95,19 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            const { setupActions, price, orderId } = properties;
+            yield properties;
+
+            const { describer, setupActions, price, orderId } = properties;
             const orders = applySetupActions(setupActions, new Orders());
             const order = orders.get(orderType, price, orderId);
             if (order?.cancelable) {
-                yield properties;
+                yield {
+                    ...properties,
+                    setupActions: [
+                        ...setupActions,
+                        new CancelOrderAction({ describer, orderType, price, orderId })
+                    ]
+                };
             }
 
         }).then(function*(properties) {
@@ -110,69 +119,22 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookCancelOrderScenario(properties);
-        })
-    ]);
-}
-
-for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookCancelOrderScenarios.push([
-        `cancel ${describeOrderType(orderType)} orders at different prices`,
-        generatorChain(function*() {
-            yield {
-                orderType,
-                orderId: 1n,
-                describer: describer.clone().configure({
-                    hideOrderType: true,
-                    hideOrderId: true,
-                    hideContractSize: true,
-                    hidePriceTick: true,
-                })
-            };
-
-        }).then(function*(properties) {
-            for (const price of [...range(1, 3)].map(v => parseValue(v))) {
-                yield {
-                    ...properties,
-                    price,
-                };
-            }
-
-        }).then(function*(properties) {
-            const { describer, price } = properties;
-            for (const prices of (EXHAUSTIVE ? permutations : combinations)([...range(1, 3)].map(v => parseValue(v)))) {
-                if (prices.includes(price)) {
-                    yield {
-                        ...properties,
-                        setupActions: prices.map(price =>
-                            new PlaceOrderAction({ describer, orderType, price, amount: 1n })),
-                    };
-                }
-            }
-
-        }).then(function*(properties) {
-            const { describer, setupActions, price } = properties;
+            const { setupActions, price, orderId } = properties;
             const orders = applySetupActions(setupActions, new Orders());
-            for (const prices of permutations(orders.prices(orderType).filter(p => p != price))) {
-                yield {
-                    ...properties,
-                    setupActions: [
-                        ...setupActions,
-                        ...prices.map(price =>
-                            new CancelOrderAction({ describer, orderType, price, orderId: 1n }))
-                    ],
-                };
+            const order = orders.get(orderType, price, orderId);
+            if (order?.claimable) {
+                yield properties;
             }
 
         }).then(function*(properties) {
-            yield new OrderbookCancelOrderScenario(properties);
+            yield new ClaimOrderScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookCancelOrderScenarios.push([
-        `cancel deleted ${describeOrderType(orderType)} orders`,
+    claimOrderScenarios.push([
+        `claim deleted ${describeOrderType(orderType)} orders`,
         generatorChain(function*() {
             yield {
                 orderType,
@@ -244,14 +206,14 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookCancelOrderScenario(properties);
+            yield new ClaimOrderScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookCancelOrderScenarios.push([
-        `cancel invalid ${describeOrderType(orderType)} orders`,
+    claimOrderScenarios.push([
+        `claim invalid ${describeOrderType(orderType)} orders`,
         generatorChain(function*() {
             yield {
                 orderType,
@@ -308,114 +270,47 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             }
 
         }).then(function*(properties) {
-            yield new OrderbookCancelOrderScenario(properties);
+            yield new ClaimOrderScenario(properties);
         })
     ]);
 }
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookCancelOrderScenarios.push([
-        `cancel ${describeOrderType(orderType)} orders already filled`,
+    claimOrderScenarios.push([
+        `claim ${describeOrderType(orderType)} orders with common errors`,
         generatorChain(function*() {
             yield {
-                orderType,
-                expectedError: AlreadyFilled,
-                describer: describer.clone().configure({
-                    hideOrderType: true,
-                    hidePrice: !EXHAUSTIVE,
-                    hideContractSize: !EXHAUSTIVE,
-                    hidePriceTick: true,
-                })
-            };
-
-        }).then(function*(properties) {
-            for (const price of [...range(1, EXHAUSTIVE ? 2 : 1)].map(v => parseValue(v))) {
-                yield {
-                    ...properties,
-                    price,
-                };
-            }
-
-        }).then(function*(properties) {
-            for (const orderId of range(1n, 3n)) {
-                yield {
-                    ...properties,
-                    orderId,
-                }
-            }
-
-        }).then(function*(properties) {
-            const { describer, price } = properties;
-            const actions = [ new PlaceOrderAction({ describer, orderType, price, amount: 1n }) ];
-            for (const setupActions of repetitions(actions, 3, 3)) {
-                yield {
-                    ...properties,
-                    setupActions,
-                };
-            }
-
-        }).then(function*(properties) {
-            const { describer, setupActions, price, orderId } = properties;
-            const orders = applySetupActions(setupActions, new Orders());
-            const totalPlacedBeforeOrder = orders.totalPlacedBeforeOrder(orderType, price, orderId);
-            const amount = orders.get(orderType, price, orderId)?.amount ?? 0n;
-            yield {
-                ...properties,
-                setupActions: [
-                    ...setupActions,
-                    new FillAction({ describer, orderType, maxAmount: totalPlacedBeforeOrder + amount })
-                ]
-            };
-
-        }).then(function*(properties) {
-            for (const contractSize of [...range(1, EXHAUSTIVE ? 2 : 1)].map(v => parseValue(v * 10))) {
-                yield {
-                    ...properties,
-                    contractSize,
-                };
-            }
-
-        }).then(function*(properties) {
-            yield new OrderbookCancelOrderScenario(properties);
-        })
-    ]);
-}
-
-for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookCancelOrderScenarios.push([
-        `cancel ${describeOrderType(orderType)} orders with common errors`,
-        generatorChain(function*() {
-            yield {
-                describer: 'stop cancel order when order has been placed after it',
+                describer: 'claim 0 contracts',
                 orderType,
                 price: parseValue(1),
                 orderId: 1n,
-                maxLastOrderId: 1n,
+                maxAmount: 0n,
                 setupActions: [
                     new PlaceOrderAction({ describer, orderType, price: parseValue(1), amount: 1n }),
-                    new PlaceOrderAction({ describer, orderType, price: parseValue(1), amount: 1n }),
+                    new FillAction({ describer, orderType, maxAmount: 1n })
                 ],
-                expectedError: OverMaxLastOrderId,
+                expectedError: InvalidAmount,
             };
             yield {
-                describer: 'cancel order owned by someone else',
+                describer: 'claim order owned by someone else',
                 orderType,
                 price: parseValue(1),
                 orderId: 1n,
                 setupActions: [
                     new PlaceOrderAction({ describer, account: Account.SECOND, orderType, price: parseValue(1), amount: 1n }),
+                    new FillAction({ describer, orderType, maxAmount: 1n })
                 ],
                 expectedError: Unauthorized,
             };
             yield {
-                describer: 'cancel order at price 0',
+                describer: 'claim order at price 0',
                 orderType,
                 price: parseValue(0),
                 orderId: 1n,
                 expectedError: InvalidPrice,
             };
             yield {
-                describer: 'cancel order at price not divisible by price tick',
+                describer: 'claim order at price not divisible by price tick',
                 orderType,
                 price: parseValue(1),
                 orderId: 1n,
@@ -424,7 +319,7 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             };
 
         }).then(function*(properties) {
-            yield new OrderbookCancelOrderScenario(properties);
+            yield new ClaimOrderScenario(properties);
         })
     ]);
 }

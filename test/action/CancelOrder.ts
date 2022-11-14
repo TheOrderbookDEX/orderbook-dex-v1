@@ -1,47 +1,47 @@
 import { OrderType } from '../state/OrderType';
-import { OrderbookAction, OrderbookActionProperties } from './OrderbookAction';
+import { OrderbookAction, OrderbookActionProperties } from './Orderbook';
 import { Orders } from '../state/Orders';
-import { OrderbookContext } from '../scenario/OrderbookScenario';
+import { OrderbookContext } from '../scenario/Orderbook';
 import { MAX_UINT32 } from '@frugal-wizard/abi2ts-lib';
 
-export interface ClaimOrderActionProperties extends OrderbookActionProperties {
+export interface CancelOrderActionProperties extends OrderbookActionProperties {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
-    readonly maxAmount?: bigint;
+    readonly maxLastOrderId?: bigint;
 }
 
-export class ClaimOrderAction extends OrderbookAction {
+export class CancelOrderAction extends OrderbookAction {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;
-    readonly maxAmount: bigint;
+    readonly maxLastOrderId: bigint;
 
     constructor({
         orderType,
         price,
         orderId,
-        maxAmount = MAX_UINT32,
+        maxLastOrderId = MAX_UINT32,
         ...rest
-    }: ClaimOrderActionProperties) {
+    }: CancelOrderActionProperties) {
         super(rest);
         this.orderType = orderType;
         this.price = price;
         this.orderId = orderId;
-        this.maxAmount = maxAmount;
+        this.maxLastOrderId = maxLastOrderId;
     }
 
     async execute(ctx: OrderbookContext) {
-        const { addressBook, orderbook, } = ctx;
-        const { orderType, price, orderId, maxAmount } = this;
+        const { addressBook, orderbook } = ctx;
+        const { orderType, price, orderId, maxLastOrderId } = this;
         const from = await addressBook.addr((await orderbook.order(orderType, price, orderId)).owner);
-        await orderbook.claimOrder(orderType, price, orderId, maxAmount, { from });
+        await orderbook.cancelOrder(orderType, price, orderId, maxLastOrderId, { from });
     }
 
     apply<T>(state: T) {
         if (state instanceof Orders) {
-            const { orderType, price, orderId, maxAmount } = this;
-            return state.claim(orderType, price, orderId, maxAmount);
+            const { orderType, price, orderId } = this;
+            return state.cancel(orderType, price, orderId);
         } else {
             return state;
         }

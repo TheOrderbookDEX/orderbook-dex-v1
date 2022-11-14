@@ -2,18 +2,18 @@ import { parseValue } from '@frugal-wizard/abi2ts-lib';
 import { NotRegistered } from '@frugal-wizard/addressbook/dist/utils/AddressBookUtil';
 import { Account, generatorChain } from '@frugal-wizard/contract-test-helper';
 import { InvalidOrderId, InvalidPrice, OrderDeleted, Unauthorized } from '../../src/OrderbookV1';
-import { CancelOrderAction } from '../action/CancelOrderAction';
-import { ClaimOrderAction } from '../action/ClaimOrderAction';
-import { FillAction } from '../action/FillAction';
-import { PlaceOrderAction } from '../action/PlaceOrderAction';
+import { CancelOrderAction } from '../action/CancelOrder';
+import { ClaimOrderAction } from '../action/ClaimOrder';
+import { FillAction } from '../action/Fill';
+import { PlaceOrderAction } from '../action/PlaceOrder';
 import { describer } from '../describer/describer';
-import { OrderbookTransferOrderScenario, TransferTo } from '../scenario/OrderbookTransferOrderScenario';
+import { TransferOrderScenario, TransferTo } from '../scenario/TransferOrder';
 import { describeOrderType, OrderType } from '../state/OrderType';
 
-export const orderbookTransferOrderScenarios: [string, Iterable<OrderbookTransferOrderScenario>][] = [];
+export const transferOrderScenarios: [string, Iterable<TransferOrderScenario>][] = [];
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
-    orderbookTransferOrderScenarios.push([
+    transferOrderScenarios.push([
         `transfer ${describeOrderType(orderType)} orders`,
         generatorChain(function*() {
             yield {
@@ -112,7 +112,7 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
             };
 
         }).then(function*(properties) {
-            yield new OrderbookTransferOrderScenario(properties);
+            yield new TransferOrderScenario(properties);
         })
     ]);
 }

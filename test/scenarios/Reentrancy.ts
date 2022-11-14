@@ -2,20 +2,20 @@ import { parseValue } from '@frugal-wizard/abi2ts-lib';
 import { Account, generatorChain } from '@frugal-wizard/contract-test-helper';
 import { OrderDeleted } from '../../src/OrderbookV1';
 import { CannotPlaceOrder } from '../../src/OrderbookV1';
-import { CancelOrderUsingPuppetAction } from '../action/CancelOrderUsingPuppetAction';
-import { ClaimOrderUsingPuppetAction } from '../action/ClaimOrderUsingPuppetAction';
-import { FillAction } from '../action/FillAction';
-import { FillUsingPuppetAction } from '../action/FillUsingPuppetAction';
-import { PlaceOrderAction } from '../action/PlaceOrderAction';
-import { PlaceOrderUsingPuppetAction } from '../action/PlaceOrderUsingPuppetAction';
+import { CancelOrderUsingPuppetAction } from '../action/CancelOrderUsingPuppet';
+import { ClaimOrderUsingPuppetAction } from '../action/ClaimOrderUsingPuppet';
+import { FillAction } from '../action/Fill';
+import { FillUsingPuppetAction } from '../action/FillUsingPuppet';
+import { PlaceOrderAction } from '../action/PlaceOrder';
+import { PlaceOrderUsingPuppetAction } from '../action/PlaceOrderUsingPuppet';
 import { describer } from '../describer/describer';
-import { OrderbookReentrancyScenario } from '../scenario/OrderbookReentrancyScenario';
+import { ReentrancyScenario } from '../scenario/Reentrancy';
 import { OrderType } from '../state/OrderType';
 import { Token } from '../state/Token';
 
-export const orderbookReentrancyScenarios: [string, Iterable<OrderbookReentrancyScenario>][] = [];
+export const reentrancyScenarios: [string, Iterable<ReentrancyScenario>][] = [];
 
-orderbookReentrancyScenarios.push([
+reentrancyScenarios.push([
     'placeOrder',
     generatorChain(function*() {
         yield {
@@ -61,11 +61,11 @@ orderbookReentrancyScenarios.push([
         };
 
     }).then(function*(properties) {
-        yield new OrderbookReentrancyScenario(properties);
+        yield new ReentrancyScenario(properties);
     })
 ]);
 
-orderbookReentrancyScenarios.push([
+reentrancyScenarios.push([
     'fill',
     generatorChain(function*() {
         yield {
@@ -120,11 +120,11 @@ orderbookReentrancyScenarios.push([
         };
 
     }).then(function*(properties) {
-        yield new OrderbookReentrancyScenario(properties);
+        yield new ReentrancyScenario(properties);
     })
 ]);
 
-orderbookReentrancyScenarios.push([
+reentrancyScenarios.push([
     'claimOrder',
     generatorChain(function*() {
         yield {
@@ -189,11 +189,11 @@ orderbookReentrancyScenarios.push([
         };
 
     }).then(function*(properties) {
-        yield new OrderbookReentrancyScenario(properties);
+        yield new ReentrancyScenario(properties);
     })
 ]);
 
-orderbookReentrancyScenarios.push([
+reentrancyScenarios.push([
     'cancelOrder',
     generatorChain(function*() {
         yield {
@@ -236,6 +236,6 @@ orderbookReentrancyScenarios.push([
         };
 
     }).then(function*(properties) {
-        yield new OrderbookReentrancyScenario(properties);
+        yield new ReentrancyScenario(properties);
     })
 ]);

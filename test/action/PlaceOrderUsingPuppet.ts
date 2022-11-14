@@ -1,7 +1,7 @@
 import { OrderType } from '../state/OrderType';
 import { Orders } from '../state/Orders';
-import { OrderbookReentrancyContext } from '../scenario/OrderbookReentrancyScenario';
-import { ReentrancyAction, ReentrancyActionProperties } from './ReentrancyAction';
+import { ReentrancyContext } from '../scenario/Reentrancy';
+import { ReentrancyAction, ReentrancyActionProperties } from './Reentrancy';
 import { SpecialAccount } from '../state/Order';
 import { OrderbookV1 } from '../../src/OrderbookV1';
 
@@ -28,13 +28,13 @@ export class PlaceOrderUsingPuppetAction extends ReentrancyAction {
         this.amount = amount;
     }
 
-    async execute(ctx: OrderbookReentrancyContext) {
+    async execute(ctx: ReentrancyContext) {
         const { puppet, orderbook } = ctx;
         await this.approve(ctx);
         await puppet.call(orderbook, this.encode());
     }
 
-    async approve(ctx: OrderbookReentrancyContext) {
+    async approve(ctx: ReentrancyContext) {
         const { puppet, tradedToken, baseToken, orderbook } = ctx;
         const { orderType, price, amount } = this;
         switch (orderType) {

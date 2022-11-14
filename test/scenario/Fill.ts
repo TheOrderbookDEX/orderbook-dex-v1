@@ -1,10 +1,10 @@
 import { formatValue, MAX_UINT256, MAX_UINT8, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
-import { FillAction } from '../action/FillAction';
+import { FillAction } from '../action/Fill';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './OrderbookScenario';
+import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from './Orderbook';
 
-export interface OrderbookFillScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
+export interface FillScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
     readonly orderType: OrderType;
     readonly maxAmount: bigint;
     readonly maxPrice?: bigint;
@@ -12,7 +12,7 @@ export interface OrderbookFillScenarioProperties extends OrderbookScenarioProper
     readonly allowance?: bigint;
 }
 
-export class OrderbookFillScenario extends OrderbookScenario<OrderbookContext, Transaction, [bigint, bigint]> {
+export class FillScenario extends OrderbookScenario<OrderbookContext, Transaction, [bigint, bigint]> {
     readonly orderType: OrderType;
     readonly maxAmount: bigint;
     readonly maxPrice: bigint;
@@ -26,7 +26,7 @@ export class OrderbookFillScenario extends OrderbookScenario<OrderbookContext, T
         maxPricePoints = MAX_UINT8,
         allowance,
         ...rest
-    }: OrderbookFillScenarioProperties) {
+    }: FillScenarioProperties) {
         super(rest);
         this.orderType = orderType;
         this.maxAmount = maxAmount;
