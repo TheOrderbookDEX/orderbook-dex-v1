@@ -50,7 +50,9 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
         IOrderbookV1 orderbook_ = new OrderbookV1(_addressBook, tradedToken, baseToken, contractSize, priceTick);
         _orderbooks[_totalCreated] = orderbook_;
         _totalCreated++;
-        emit OrderbookCreated(orderbook_, tradedToken, baseToken, contractSize, priceTick);
+        emit OrderbookCreated(
+            10000, address(orderbook_), address(tradedToken), address(baseToken), contractSize, priceTick
+        );
         return orderbook_;
     }
 

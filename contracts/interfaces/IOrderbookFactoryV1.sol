@@ -4,6 +4,7 @@ pragma solidity ^0.8.0;
 
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { IAddressBook } from "@frugal-wizard/addressbook/contracts/interfaces/IAddressBook.sol";
+import { IOrderbookFactory } from "@theorderbookdex/orderbook-dex/contracts/interfaces/IOrderbookFactory.sol";
 import { IOrderbookV1 } from "./IOrderbookV1.sol";
 
 /**
@@ -11,24 +12,7 @@ import { IOrderbookV1 } from "./IOrderbookV1.sol";
  *
  * All orderbooks created by this factory use the same address book.
  */
-interface IOrderbookFactoryV1 {
-    /**
-     * Event emitted when an orderbook is created.
-     *
-     * @param orderbook    the orderbook created
-     * @param tradedToken  the token being traded
-     * @param baseToken    the token given in exchange and used for pricing
-     * @param contractSize the size of a contract in tradedToken
-     * @param priceTick    the price tick in baseToken
-     */
-    event OrderbookCreated(
-        IOrderbookV1 indexed orderbook,
-        IERC20       indexed tradedToken,
-        IERC20       indexed baseToken,
-        uint256              contractSize,
-        uint256              priceTick
-    );
-
+interface IOrderbookFactoryV1 is IOrderbookFactory {
     /**
      * Error thrown when trying to deploy a factory with an invalid address book.
      */
