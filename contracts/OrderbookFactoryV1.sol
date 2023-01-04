@@ -7,6 +7,8 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { IOrderbookV1 } from "./interfaces/IOrderbookV1.sol";
 import { IOrderbookFactoryV1 } from "./interfaces/IOrderbookFactoryV1.sol";
 import { OrderbookV1 } from "./OrderbookV1.sol";
+import { IOrderbookDEXTeamTreasury }
+    from "@theorderbookdex/orderbook-dex/contracts/interfaces/IOrderbookDEXTeamTreasury.sol";
 
 /**
  * Orderbook factory.
@@ -74,5 +76,9 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
             orderbooks_[i] = _orderbooks[index + i];
         }
         return orderbooks_;
+    }
+
+    function treasury() external view returns (IOrderbookDEXTeamTreasury) {
+        // TODO implement treasury
     }
 }

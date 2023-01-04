@@ -7,6 +7,8 @@ import { IAddressBook } from "@frugal-wizard/addressbook/contracts/interfaces/IA
 import { AddressBookUtil } from "@frugal-wizard/addressbook/contracts/utils/AddressBookUtil.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+import { IOrderbookDEXTeamTreasury }
+    from "@theorderbookdex/orderbook-dex/contracts/interfaces/IOrderbookDEXTeamTreasury.sol";
 
 contract OrderbookV1 is IOrderbookV1 {
     using AddressBookUtil for IAddressBook;
@@ -579,5 +581,9 @@ contract OrderbookV1 is IOrderbookV1 {
 
     function version() external pure returns (uint32) {
         return 10000;
+    }
+
+    function treasury() external view returns (IOrderbookDEXTeamTreasury) {
+        // TODO implement treasury
     }
 }
