@@ -557,10 +557,13 @@ describer.addDescriber(ReentrancyScenario, function({
 });
 
 describer.addDescriber(DeployOrderbookFactoryScenario, function({
-    addressBookAddress
+    fee, addressBookAddress
 }) {
     const description = ['deploy factory'];
     const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
+    }
     if (addressBookAddress) {
         settings.push(`addressBook at ${addressBookAddress}`);
     }
@@ -596,10 +599,13 @@ describer.addDescriber(CreateOrderbookAction, function({
 });
 
 describer.addDescriber(CreateOrderbookScenario, function({
-    tradedTokenAddress, baseTokenAddress, contractSize, priceTick, setupActions
+    fee, tradedTokenAddress, baseTokenAddress, contractSize, priceTick, setupActions
 }, config = {}) {
     const description = ['create orderbook'];
     const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
+    }
     if (tradedTokenAddress) {
         settings.push(`tradedToken at ${tradedTokenAddress}`);
     }

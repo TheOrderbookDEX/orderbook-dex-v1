@@ -19,6 +19,11 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
     /**
      * The address book used by the factory.
      */
+    IOrderbookDEXTeamTreasury private immutable _treasury;
+
+    /**
+     * The address book used by the factory.
+     */
     IAddressBook private immutable _addressBook;
 
     /**
@@ -36,10 +41,14 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
      *
      * @param addressBook_ the address book used by the factory
      */
-    constructor(IAddressBook addressBook_) {
+    constructor(
+        IOrderbookDEXTeamTreasury treasury_,
+        IAddressBook addressBook_
+    ) {
         if (address(addressBook_) == address(0)) {
             revert InvalidAddressBook();
         }
+        _treasury = treasury_;
         _addressBook = addressBook_;
     }
 
@@ -79,6 +88,6 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
     }
 
     function treasury() external view returns (IOrderbookDEXTeamTreasury) {
-        // TODO implement treasury
+        return _treasury;
     }
 }

@@ -1,27 +1,36 @@
 import { AddContextFunction, BaseTestContext, TestScenario, TestScenarioProperties } from '@frugal-wizard/contract-test-helper';
 import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
 import { OrderbookFactoryV1 } from '../../src/OrderbookFactoryV1';
+import { OrderbookDEXTeamTreasuryMock } from '@theorderbookdex/orderbook-dex/dist/testing/OrderbookDEXTeamTreasuryMock';
 
 export interface DeployOrderbookFactoryContext extends BaseTestContext {
+    readonly treasury: OrderbookDEXTeamTreasuryMock;
     readonly addressBook: AddressBook;
 }
 
 export interface DeployOrderbookFactoryScenarioProperties extends TestScenarioProperties<BaseTestContext> {
+    readonly fee?: bigint;
     readonly addressBookAddress?: string;
 }
 
 export class DeployOrderbookFactoryScenario extends TestScenario<DeployOrderbookFactoryContext, OrderbookFactoryV1, string> {
+    readonly fee: bigint;
     readonly addressBookAddress?: string;
 
     constructor({
+        fee = 0n,
         addressBookAddress,
         ...rest
     }: DeployOrderbookFactoryScenarioProperties) {
         super(rest);
+        this.fee = fee;
         this.addressBookAddress = addressBookAddress;
     }
 
     addContext(addContext: AddContextFunction): void {
+        if (this.fee) {
+            addContext('fee', this.fee);
+        }
         if (this.addressBookAddress) {
             addContext('address book address', this.addressBookAddress);
         }
@@ -30,21 +39,22 @@ export class DeployOrderbookFactoryScenario extends TestScenario<DeployOrderbook
 
     protected async _setup(): Promise<DeployOrderbookFactoryContext> {
         const ctx = await super._setup();
+        const treasury = await OrderbookDEXTeamTreasuryMock.deploy(this.fee);
         const addressBook = this.addressBookAddress ?
             AddressBook.at(this.addressBookAddress) :
             await AddressBook.deploy();
-        return { ...ctx, addressBook };
+        return { ...ctx, treasury, addressBook };
     }
 
     async setup() {
         return await this._setup();
     }
 
-    async execute({ addressBook }: DeployOrderbookFactoryContext) {
-        return await OrderbookFactoryV1.deploy(addressBook);
+    async execute({ treasury, addressBook }: DeployOrderbookFactoryContext) {
+        return await OrderbookFactoryV1.deploy(treasury, addressBook);
     }
 
-    async executeStatic({ addressBook }: DeployOrderbookFactoryContext) {
-        return await OrderbookFactoryV1.callStatic.deploy(addressBook);
+    async executeStatic({ treasury, addressBook }: DeployOrderbookFactoryContext) {
+        return await OrderbookFactoryV1.callStatic.deploy(treasury, addressBook);
     }
 }
