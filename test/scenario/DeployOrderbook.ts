@@ -3,14 +3,17 @@ import { OrderbookV1 } from '../../src/OrderbookV1';
 import { ERC20Mock } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20Mock';
 import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
 import { formatValue, parseValue } from '@frugal-wizard/abi2ts-lib';
+import { OrderbookDEXTeamTreasuryMock } from '@theorderbookdex/orderbook-dex/dist/testing/OrderbookDEXTeamTreasuryMock';
 
 export interface DeployOrderbookContext extends BaseTestContext {
+    readonly treasury: OrderbookDEXTeamTreasuryMock;
     readonly addressBook: AddressBook;
     readonly tradedToken: ERC20Mock;
     readonly baseToken: ERC20Mock;
 }
 
 export interface DeployOrderbookScenarioProperties extends TestScenarioProperties<BaseTestContext> {
+    readonly fee?: bigint;
     readonly addressBookAddress?: string;
     readonly tradedTokenAddress?: string;
     readonly baseTokenAddress?: string;
@@ -19,6 +22,7 @@ export interface DeployOrderbookScenarioProperties extends TestScenarioPropertie
 }
 
 export class DeployOrderbookScenario extends TestScenario<DeployOrderbookContext, OrderbookV1, string> {
+    readonly fee: bigint;
     readonly addressBookAddress?: string;
     readonly tradedTokenAddress?: string;
     readonly baseTokenAddress?: string;
@@ -26,6 +30,7 @@ export class DeployOrderbookScenario extends TestScenario<DeployOrderbookContext
     readonly priceTick: bigint;
 
     constructor({
+        fee = 0n,
         addressBookAddress,
         tradedTokenAddress,
         baseTokenAddress,
@@ -34,6 +39,7 @@ export class DeployOrderbookScenario extends TestScenario<DeployOrderbookContext
         ...rest
     }: DeployOrderbookScenarioProperties) {
         super(rest);
+        this.fee = fee;
         this.addressBookAddress = addressBookAddress;
         this.tradedTokenAddress = tradedTokenAddress;
         this.baseTokenAddress = baseTokenAddress;
@@ -42,6 +48,9 @@ export class DeployOrderbookScenario extends TestScenario<DeployOrderbookContext
     }
 
     addContext(addContext: AddContextFunction): void {
+        if (this.fee) {
+            addContext('fee', this.fee);
+        }
         if (this.addressBookAddress) {
             addContext('address book address', this.addressBookAddress);
         }
@@ -58,6 +67,7 @@ export class DeployOrderbookScenario extends TestScenario<DeployOrderbookContext
 
     protected async _setup(): Promise<DeployOrderbookContext> {
         const ctx = await super._setup();
+        const treasury = await OrderbookDEXTeamTreasuryMock.deploy(this.fee);
         const addressBook = this.addressBookAddress ?
             AddressBook.at(this.addressBookAddress) :
             await AddressBook.deploy();
@@ -67,20 +77,20 @@ export class DeployOrderbookScenario extends TestScenario<DeployOrderbookContext
         const baseToken = this.baseTokenAddress ?
             ERC20Mock.at(this.baseTokenAddress) :
             await ERC20Mock.deploy('Base Token', 'BASE', 18);
-        return { ...ctx, addressBook, tradedToken, baseToken };
+        return { ...ctx, treasury, addressBook, tradedToken, baseToken };
     }
 
     async setup() {
         return await this._setup();
     }
 
-    async execute({ addressBook, tradedToken, baseToken }: DeployOrderbookContext) {
+    async execute({ treasury, addressBook, tradedToken, baseToken }: DeployOrderbookContext) {
         const { contractSize, priceTick } = this;
-        return await OrderbookV1.deploy(addressBook, tradedToken, baseToken, contractSize, priceTick);
+        return await OrderbookV1.deploy(treasury, addressBook, tradedToken, baseToken, contractSize, priceTick);
     }
 
-    async executeStatic({ addressBook, tradedToken, baseToken }: DeployOrderbookContext) {
+    async executeStatic({ treasury, addressBook, tradedToken, baseToken }: DeployOrderbookContext) {
         const { contractSize, priceTick } = this;
-        return await OrderbookV1.callStatic.deploy(addressBook, tradedToken, baseToken, contractSize, priceTick);
+        return await OrderbookV1.callStatic.deploy(treasury, addressBook, tradedToken, baseToken, contractSize, priceTick);
     }
 }

@@ -35,6 +35,12 @@ describe('OrderbookV1', () => {
                     });
 
                 } else {
+                    it('should deploy with the provided treasury contract', async (test) => {
+                        const orderbook = await test.execute();
+                        expect(await orderbook.treasury())
+                            .to.be.equal(test.treasury.address);
+                    });
+
                     it('should deploy with the provided address book contract', async (test) => {
                         const orderbook = await test.execute();
                         expect(await orderbook.addressBook())

@@ -17,7 +17,7 @@ import { IOrderbookDEXTeamTreasury }
  */
 contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
     /**
-     * The address book used by the factory.
+     * The Orderbook DEX Team Treasury.
      */
     IOrderbookDEXTeamTreasury private immutable _treasury;
 
@@ -39,11 +39,12 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
     /**
      * Constructor.
      *
+     * @param treasury_    the Orderbook DEX Team Treasury
      * @param addressBook_ the address book used by the factory
      */
     constructor(
         IOrderbookDEXTeamTreasury treasury_,
-        IAddressBook addressBook_
+        IAddressBook              addressBook_
     ) {
         if (address(addressBook_) == address(0)) {
             revert InvalidAddressBook();
@@ -58,7 +59,9 @@ contract OrderbookFactoryV1 is IOrderbookFactoryV1 {
         uint256 contractSize,
         uint256 priceTick
     ) external returns (IOrderbookV1) {
-        IOrderbookV1 orderbook_ = new OrderbookV1(_addressBook, tradedToken, baseToken, contractSize, priceTick);
+        IOrderbookV1 orderbook_ = new OrderbookV1(
+            _treasury, _addressBook, tradedToken, baseToken, contractSize, priceTick
+        );
         _orderbooks[_totalCreated] = orderbook_;
         _totalCreated++;
         emit OrderbookCreated(

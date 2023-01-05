@@ -10,9 +10,16 @@ import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.s
 import { IOrderbookDEXTeamTreasury }
     from "@theorderbookdex/orderbook-dex/contracts/interfaces/IOrderbookDEXTeamTreasury.sol";
 
+// TODO implement fee
+
 contract OrderbookV1 is IOrderbookV1 {
     using AddressBookUtil for IAddressBook;
     using SafeERC20 for IERC20;
+
+    /**
+     * The Orderbook DEX Team Treasury.
+     */
+    IOrderbookDEXTeamTreasury private immutable _treasury;
 
     /**
      * The address book used by the orderbook.
@@ -72,6 +79,7 @@ contract OrderbookV1 is IOrderbookV1 {
     /**
      * Constructor.
      *
+     * @param treasury_     the Orderbook DEX Team Treasury
      * @param addressBook_  the address book used by the orderbook
      * @param tradedToken_  the token being traded
      * @param baseToken_    the token given in exchange and used for pricing
@@ -79,11 +87,12 @@ contract OrderbookV1 is IOrderbookV1 {
      * @param priceTick_    the price tick in baseToken
      */
     constructor(
-        IAddressBook    addressBook_,
-        IERC20          tradedToken_,
-        IERC20          baseToken_,
-        uint256         contractSize_,
-        uint256         priceTick_
+        IOrderbookDEXTeamTreasury treasury_,
+        IAddressBook              addressBook_,
+        IERC20                    tradedToken_,
+        IERC20                    baseToken_,
+        uint256                   contractSize_,
+        uint256                   priceTick_
     ) {
         if (address(addressBook_) == address(0)) {
             revert InvalidAddressBook();
@@ -103,6 +112,7 @@ contract OrderbookV1 is IOrderbookV1 {
         if (priceTick_ == 0) {
             revert InvalidPriceTick();
         }
+        _treasury       = treasury_;
         _addressBook    = addressBook_;
         _tradedToken    = tradedToken_;
         _baseToken      = baseToken_;
@@ -584,6 +594,6 @@ contract OrderbookV1 is IOrderbookV1 {
     }
 
     function treasury() external view returns (IOrderbookDEXTeamTreasury) {
-        // TODO implement treasury
+        return _treasury;
     }
 }

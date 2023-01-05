@@ -284,8 +284,10 @@ describer.addDescriber(CancelOrderUsingPuppetAction, function({
 });
 
 describer.addDescriber(DeployOrderbookScenario, function({
-    addressBookAddress, tradedTokenAddress, baseTokenAddress, contractSize, priceTick
-}, config = {}) {
+    addressBookAddress, tradedTokenAddress, baseTokenAddress, fee, contractSize, priceTick
+}, {
+    hideContractSize, hidePriceTick
+} = {}) {
     const settings = [];
     if (addressBookAddress) {
         settings.push(`addressBook at ${addressBookAddress}`);
@@ -296,17 +298,20 @@ describer.addDescriber(DeployOrderbookScenario, function({
     if (baseTokenAddress) {
         settings.push(`baseToken at ${baseTokenAddress}`);
     }
-    if (!config.hideContractSize) {
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
+    }
+    if (!hideContractSize) {
         settings.push(`contract size at ${formatValue(contractSize)}`);
     }
-    if (!config.hidePriceTick) {
+    if (!hidePriceTick) {
         settings.push(`price tick at ${formatValue(priceTick)}`);
     }
     return `deploy orderbook${ settings.length ? ` with ${ settings.join(' and ') }` : '' }`;
 });
 
 describer.addDescriber(PlaceOrderScenario, function({
-    orderType, price, amount, setupActions, contractSize, priceTick
+    orderType, price, amount, setupActions, fee, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideAmount, hideContractSize, hidePriceTick
 } = {}) {
@@ -330,23 +335,25 @@ describer.addDescriber(PlaceOrderScenario, function({
         description.push(index == 0 ? 'after' : 'and');
         description.push(action.description);
     }
-    if (!hideContractSize || !hidePriceTick) {
-        description.push('with');
+    const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
     }
     if (!hideContractSize) {
-        description.push(`contract size at ${formatValue(contractSize)}`);
-    }
-    if (!hideContractSize && !hidePriceTick) {
-        description.push('and');
+        settings.push(`contract size at ${formatValue(contractSize)}`);
     }
     if (!hidePriceTick) {
-        description.push(`price tick at ${formatValue(priceTick)}`);
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
     }
     return description.join(' ');
 });
 
 describer.addDescriber(FillScenario, function({
-    orderType, maxAmount, maxPrice, maxPricePoints, setupActions, contractSize, priceTick
+    orderType, maxAmount, maxPrice, maxPricePoints, setupActions, fee, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideAmount, hideContractSize, hidePriceTick
 } = {}) {
@@ -385,23 +392,25 @@ describer.addDescriber(FillScenario, function({
         description.push(index == 0 ? 'after' : 'and');
         description.push(action.description);
     }
-    if (!hideContractSize || !hidePriceTick) {
-        description.push('with');
+    const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
     }
     if (!hideContractSize) {
-        description.push(`contract size at ${formatValue(contractSize)}`);
-    }
-    if (!hideContractSize && !hidePriceTick) {
-        description.push('and');
+        settings.push(`contract size at ${formatValue(contractSize)}`);
     }
     if (!hidePriceTick) {
-        description.push(`price tick at ${formatValue(priceTick)}`);
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
     }
     return description.join(' ');
 });
 
 describer.addDescriber(ClaimOrderScenario, function({
-    orderType, price, orderId, maxAmount, setupActions, contractSize, priceTick
+    orderType, price, orderId, maxAmount, setupActions, fee, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideOrderId, hideAmount, hideContractSize, hidePriceTick
 } = {}) {
@@ -434,23 +443,25 @@ describer.addDescriber(ClaimOrderScenario, function({
         description.push(index == 0 ? 'after' : 'and');
         description.push(action.description);
     }
-    if (!hideContractSize || !hidePriceTick) {
-        description.push('with');
+    const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
     }
     if (!hideContractSize) {
-        description.push(`contract size at ${formatValue(contractSize)}`);
-    }
-    if (!hideContractSize && !hidePriceTick) {
-        description.push('and');
+        settings.push(`contract size at ${formatValue(contractSize)}`);
     }
     if (!hidePriceTick) {
-        description.push(`price tick at ${formatValue(priceTick)}`);
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
     }
     return description.join(' ');
 });
 
 describer.addDescriber(CancelOrderScenario, function({
-    orderType, price, orderId, setupActions, contractSize, priceTick
+    orderType, price, orderId, setupActions, fee, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideOrderId, hideContractSize, hidePriceTick
 } = {}) {
@@ -472,23 +483,25 @@ describer.addDescriber(CancelOrderScenario, function({
         description.push(index == 0 ? 'after' : 'and');
         description.push(action.description);
     }
-    if (!hideContractSize || !hidePriceTick) {
-        description.push('with');
+    const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
     }
     if (!hideContractSize) {
-        description.push(`contract size at ${formatValue(contractSize)}`);
-    }
-    if (!hideContractSize && !hidePriceTick) {
-        description.push('and');
+        settings.push(`contract size at ${formatValue(contractSize)}`);
     }
     if (!hidePriceTick) {
-        description.push(`price tick at ${formatValue(priceTick)}`);
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
     }
     return description.join(' ');
 });
 
 describer.addDescriber(TransferOrderScenario, function({
-    orderType, price, orderId, newOwner, setupActions, contractSize, priceTick
+    orderType, price, orderId, newOwner, setupActions, fee, contractSize, priceTick
 }, {
     hidePrice, hideOrderType, hideOrderId, hideContractSize, hidePriceTick
 } = {}) {
@@ -511,23 +524,25 @@ describer.addDescriber(TransferOrderScenario, function({
         description.push(index == 0 ? 'after' : 'and');
         description.push(action.description);
     }
-    if (!hideContractSize || !hidePriceTick) {
-        description.push('with');
+    const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
     }
     if (!hideContractSize) {
-        description.push(`contract size at ${formatValue(contractSize)}`);
-    }
-    if (!hideContractSize && !hidePriceTick) {
-        description.push('and');
+        settings.push(`contract size at ${formatValue(contractSize)}`);
     }
     if (!hidePriceTick) {
-        description.push(`price tick at ${formatValue(priceTick)}`);
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
     }
     return description.join(' ');
 });
 
 describer.addDescriber(ReentrancyScenario, function({
-    compromisedToken, mainAction, reentrantAction, setupActions, contractSize, priceTick
+    compromisedToken, mainAction, reentrantAction, setupActions, fee, contractSize, priceTick
 }, {
     hideContractSize, hidePriceTick
 } = {}) {
@@ -541,17 +556,19 @@ describer.addDescriber(ReentrancyScenario, function({
         description.push(index == 0 ? 'after' : 'and');
         description.push(action.description);
     }
-    if (!hideContractSize || !hidePriceTick) {
-        description.push('with');
+    const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
     }
     if (!hideContractSize) {
-        description.push(`contract size at ${formatValue(contractSize)}`);
-    }
-    if (!hideContractSize && !hidePriceTick) {
-        description.push('and');
+        settings.push(`contract size at ${formatValue(contractSize)}`);
     }
     if (!hidePriceTick) {
-        description.push(`price tick at ${formatValue(priceTick)}`);
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
     }
     return description.join(' ');
 });
