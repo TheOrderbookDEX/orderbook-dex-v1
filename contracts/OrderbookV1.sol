@@ -9,12 +9,15 @@ import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import { SafeERC20 } from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import { IOrderbookDEXTeamTreasury }
     from "@theorderbookdex/orderbook-dex/contracts/interfaces/IOrderbookDEXTeamTreasury.sol";
-
-// TODO implement fee
+import { OrderbookDEXTeamTreasuryUtil }
+    from "@theorderbookdex/orderbook-dex/contracts/utils/OrderbookDEXTeamTreasuryUtil.sol";
 
 contract OrderbookV1 is IOrderbookV1 {
+    using OrderbookDEXTeamTreasuryUtil for IOrderbookDEXTeamTreasury;
     using AddressBookUtil for IAddressBook;
     using SafeERC20 for IERC20;
+
+    uint32 constant VERSION = 10000;
 
     /**
      * The Orderbook DEX Team Treasury.
@@ -75,6 +78,16 @@ contract OrderbookV1 is IOrderbookV1 {
      * The next available buy price point.
      */
     mapping(uint256 => uint256) private _nextBuyPrice;
+
+    /**
+     * The total collected fees in traded token that have not yet been claimed.
+     */
+    uint256 private _collectedTradedToken;
+
+    /**
+     * The total collected fees in base token that have not yet been claimed.
+     */
+    uint256 private _collectedBaseToken;
 
     /**
      * Constructor.
@@ -177,19 +190,19 @@ contract OrderbookV1 is IOrderbookV1 {
     }
 
     function fill(OrderType orderType, uint64 maxAmount, uint256 maxPrice, uint8 maxPricePoints) external
-        returns (uint64 amountFilled, uint256 totalPrice)
+        returns (uint64 amountFilled, uint256 totalPrice, uint256 fee)
     {
         uint256 price;
 
         if (orderType == OrderType.SELL) {
             price = _askPrice;
             if (price == 0 || price > maxPrice) {
-                return (0, 0);
+                return (0, 0, 0);
             }
         } else {
             price = _bidPrice;
             if (price == 0 || price < maxPrice) {
-                return (0, 0);
+                return (0, 0, 0);
             }
         }
 
@@ -249,16 +262,25 @@ contract OrderbookV1 is IOrderbookV1 {
         }
 
         if (orderType == OrderType.SELL) {
+            uint256 totalTradedToken = amountFilled * _contractSize;
+
+            fee = totalTradedToken * _treasury.safeFee(VERSION) / 1 ether;
+            _collectedTradedToken += fee;
+
             _baseToken.safeTransferFrom(msg.sender, address(this), totalPrice);
-            _tradedToken.safeTransfer(msg.sender, amountFilled * _contractSize);
+            _tradedToken.safeTransfer(msg.sender, totalTradedToken - fee);
+
         } else {
+            fee = totalPrice * _treasury.safeFee(VERSION) / 1 ether;
+            _collectedBaseToken += fee;
+
             _tradedToken.safeTransferFrom(msg.sender, address(this), amountFilled * _contractSize);
-            _baseToken.safeTransfer(msg.sender, totalPrice);
+            _baseToken.safeTransfer(msg.sender, totalPrice - fee);
         }
     }
 
     function claimOrder(OrderType orderType, uint256 price, uint32 orderId, uint32 maxAmount) external
-        returns (uint32 amountClaimed)
+        returns (uint32 amountClaimed, uint256 fee)
     {
         if (maxAmount == 0) {
             revert InvalidAmount();
@@ -285,7 +307,7 @@ contract OrderbookV1 is IOrderbookV1 {
         }
 
         if (pricePoint_.totalFilled < order_.totalPlacedBeforeOrder) {
-            return 0;
+            return (0, 0);
         }
 
         uint64 amountFilled = pricePoint_.totalFilled - order_.totalPlacedBeforeOrder;
@@ -312,9 +334,20 @@ contract OrderbookV1 is IOrderbookV1 {
             }
 
             if (orderType == OrderType.SELL) {
-                _baseToken.safeTransfer(msg.sender, amountClaimed * price);
+                uint256 totalClaimed = amountClaimed * price;
+
+                fee = totalClaimed * _treasury.safeFee(VERSION) / 1 ether;
+                _collectedBaseToken += fee;
+
+                _baseToken.safeTransfer(msg.sender, totalClaimed - fee);
+
             } else {
-                _tradedToken.safeTransfer(msg.sender, amountClaimed * _contractSize);
+                uint256 totalClaimed = amountClaimed * _contractSize;
+
+                fee = totalClaimed * _treasury.safeFee(VERSION) / 1 ether;
+                _collectedTradedToken += fee;
+
+                _tradedToken.safeTransfer(msg.sender, totalClaimed - fee);
             }
         }
     }
@@ -545,6 +578,10 @@ contract OrderbookV1 is IOrderbookV1 {
         }
     }
 
+    function claimFees() external {
+        // TODO claimFees
+    }
+
     function addressBook() external view returns (IAddressBook) {
         return _addressBook;
     }
@@ -590,10 +627,15 @@ contract OrderbookV1 is IOrderbookV1 {
     }
 
     function version() external pure returns (uint32) {
-        return 10000;
+        return VERSION;
     }
 
     function treasury() external view returns (IOrderbookDEXTeamTreasury) {
         return _treasury;
+    }
+
+    function collectedFees() external view returns (uint256 collectedTradedToken, uint256 collectedBaseToken) {
+        collectedTradedToken = _collectedTradedToken;
+        collectedBaseToken = _collectedBaseToken;
     }
 }

@@ -145,6 +145,8 @@ interface IOrderbookV1 is IOrderbook {
      *
      * The sender must give an allowance to this contract for the token given in exchange.
      *
+     * Fee is taken from tokens sent back to filler.
+     *
      * Orders are filled up to a maximum amount of contracts and at the specified or better price.
      * This means prices below or equal to maxPrice for sell orders, and prices above or equal to
      * maxPrice for buy orders.
@@ -168,12 +170,15 @@ interface IOrderbookV1 is IOrderbook {
      * @param  maxPricePoints the maximum amount of price points to fill
      * @return amountFilled   the amount of contracts filled
      * @return totalPrice     the total price for the contracts filled
+     * @return fee            the fee collected
      */
     function fill(OrderType orderType, uint64 maxAmount, uint256 maxPrice, uint8 maxPricePoints) external
-        returns (uint64 amountFilled, uint256 totalPrice);
+        returns (uint64 amountFilled, uint256 totalPrice, uint256 fee);
 
     /**
      * Claim an order.
+     *
+     * Fee is taken from tokens claimed.
      *
      * This can only be called by the order owner.
      *
@@ -186,9 +191,10 @@ interface IOrderbookV1 is IOrderbook {
      * @param  orderId       the id of the order
      * @param  maxAmount     the maximum amount of contracts to claim
      * @return amountClaimed the amount of contracts claimed
+     * @return fee           the fee collected
      */
     function claimOrder(OrderType orderType, uint256 price, uint32 orderId, uint32 maxAmount) external
-        returns (uint32 amountClaimed);
+        returns (uint32 amountClaimed, uint256 fee);
 
     /**
      * Cancel an order.
@@ -224,6 +230,13 @@ interface IOrderbookV1 is IOrderbook {
     function transferOrder(OrderType orderType, uint256 price, uint32 orderId, address newOwner) external;
 
     /**
+     * Claim collected fees.
+     *
+     * This can only be called by the Orderbook DEX Team Treasury contract.
+     */
+    function claimFees() external;
+
+    /**
      * The address book used by the orderbook.
      *
      * @return  the address book used by the orderbook
@@ -248,6 +261,14 @@ interface IOrderbookV1 is IOrderbook {
      * @return order     the data
      */
     function order(OrderType orderType, uint256 price, uint32 orderId) external view returns (Order memory order);
+
+    /**
+     * The total collected fees that have not yet been claimed.
+     *
+     * @return collectedTradedToken the amount in traded token
+     * @return collectedBaseToken   the amount in base token
+     */
+    function collectedFees() external view returns (uint256 collectedTradedToken, uint256 collectedBaseToken);
 }
 
 /**

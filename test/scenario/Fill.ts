@@ -12,7 +12,7 @@ export interface FillScenarioProperties extends OrderbookScenarioProperties<Orde
     readonly allowance?: bigint;
 }
 
-export class FillScenario extends OrderbookScenario<OrderbookContext, Transaction, [bigint, bigint]> {
+export class FillScenario extends OrderbookScenario<OrderbookContext, Transaction, [bigint, bigint, bigint]> {
     readonly orderType: OrderType;
     readonly maxAmount: bigint;
     readonly maxPrice: bigint;

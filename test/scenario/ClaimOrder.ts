@@ -11,7 +11,7 @@ export interface ClaimOrderScenarioProperties extends OrderbookScenarioPropertie
     readonly maxAmount?: bigint;
 }
 
-export class ClaimOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, bigint> {
+export class ClaimOrderScenario extends OrderbookScenario<OrderbookContext, Transaction, [bigint, bigint]> {
     readonly orderType: OrderType;
     readonly price: bigint;
     readonly orderId: bigint;

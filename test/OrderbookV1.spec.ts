@@ -18,6 +18,7 @@ chai.use(chaiAsPromised);
 DefaultOverrides.gasLimit = 5000000;
 
 // TODO test overflows/underflows
+// TODO test fees
 
 describe('OrderbookV1', () => {
     describe('deploy', () => {
@@ -407,7 +408,7 @@ describe('OrderbookV1', () => {
 
                         } else {
                             it('should return the amount of contracts claimed', async (test) => {
-                                const amountClaimed = await test.executeStatic();
+                                const [ amountClaimed ] = await test.executeStatic();
                                 expect(amountClaimed)
                                     .to.be.equal(scenario.amountClaimed);
                             });
