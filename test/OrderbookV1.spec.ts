@@ -18,7 +18,6 @@ chai.use(chaiAsPromised);
 DefaultOverrides.gasLimit = 5000000;
 
 // TODO test overflows/underflows
-// TODO test fees
 
 describe('OrderbookV1', () => {
     describe('deploy', () => {
@@ -297,6 +296,12 @@ describe('OrderbookV1', () => {
                                     .to.be.equal(scenario.totalPrice);
                             });
 
+                            it('should return the fee collected', async (test) => {
+                                const [ , , fee ] = await test.executeStatic();
+                                expect(fee)
+                                    .to.be.equal(scenario.collectedFee);
+                            });
+
                             it(`should decrease ${scenario.takenToken} balance of caller accordingly`, async (test) => {
                                 const { takenAmount } = scenario;
                                 const { mainAccount, [scenario.takenToken]: takenToken } = test;
@@ -316,21 +321,38 @@ describe('OrderbookV1', () => {
                             });
 
                             it(`should decrease ${scenario.givenToken} balance of contract accordingly`, async (test) => {
-                                const { givenAmount } = scenario;
+                                const { givenAmount, collectedFee } = scenario;
                                 const { orderbook, [scenario.givenToken]: givenToken } = test;
-                                const expected = await givenToken.balanceOf(orderbook) - givenAmount;
+                                const expected = await givenToken.balanceOf(orderbook) - (givenAmount - collectedFee);
                                 await test.execute();
                                 expect(await givenToken.balanceOf(orderbook))
                                     .to.be.equal(expected);
                             });
 
                             it(`should increase ${scenario.givenToken} balance of caller accordingly`, async (test) => {
-                                const { givenAmount } = scenario;
+                                const { givenAmount, collectedFee } = scenario;
                                 const { mainAccount, [scenario.givenToken]: givenToken } = test;
-                                const expected = await givenToken.balanceOf(mainAccount) + givenAmount;
+                                const expected = await givenToken.balanceOf(mainAccount) + (givenAmount - collectedFee);
                                 await test.execute();
                                 expect(await givenToken.balanceOf(mainAccount))
                                     .to.be.equal(expected);
+                            });
+
+                            it(`should increase collected fees accordingly`, async (test) => {
+                                const { givenToken, collectedFee } = scenario;
+                                const { orderbook } = test;
+                                let [ collectedTradedToken, collectedBaseToken ] = await orderbook.collectedFees();
+                                switch (givenToken) {
+                                    case 'tradedToken':
+                                        collectedTradedToken += collectedFee;
+                                        break;
+                                    case 'baseToken':
+                                        collectedBaseToken += collectedFee;
+                                        break;
+                                }
+                                await test.execute();
+                                expect(await orderbook.collectedFees())
+                                    .to.be.deep.equal([ collectedTradedToken, collectedBaseToken ]);
                             });
 
                             it('should not change total placed contracts', async (test) => {
@@ -413,22 +435,45 @@ describe('OrderbookV1', () => {
                                     .to.be.equal(scenario.amountClaimed);
                             });
 
+                            it('should return the fee collected', async (test) => {
+                                const [ , fee ] = await test.executeStatic();
+                                expect(fee)
+                                    .to.be.equal(scenario.collectedFee);
+                            });
+
                             it(`should decrease ${scenario.givenToken} balance of contract accordingly`, async (test) => {
-                                const { givenAmount } = scenario;
+                                const { givenAmount, collectedFee } = scenario;
                                 const { orderbook, [scenario.givenToken]: givenToken } = test;
-                                const expected = await givenToken.balanceOf(orderbook) - givenAmount;
+                                const expected = await givenToken.balanceOf(orderbook) - (givenAmount - collectedFee);
                                 await test.execute();
                                 expect(await givenToken.balanceOf(orderbook))
                                     .to.be.equal(expected);
                             });
 
                             it(`should increase ${scenario.givenToken} balance of sender accordingly`, async (test) => {
-                                const { givenAmount } = scenario;
+                                const { givenAmount, collectedFee } = scenario;
                                 const { mainAccount, [scenario.givenToken]: givenToken } = test;
-                                const expected = await givenToken.balanceOf(mainAccount) + givenAmount;
+                                const expected = await givenToken.balanceOf(mainAccount) + (givenAmount - collectedFee);
                                 await test.execute();
                                 expect(await givenToken.balanceOf(mainAccount))
                                     .to.be.equal(expected);
+                            });
+
+                            it(`should increase collected fees accordingly`, async (test) => {
+                                const { givenToken, collectedFee } = scenario;
+                                const { orderbook } = test;
+                                let [ collectedTradedToken, collectedBaseToken ] = await orderbook.collectedFees();
+                                switch (givenToken) {
+                                    case 'tradedToken':
+                                        collectedTradedToken += collectedFee;
+                                        break;
+                                    case 'baseToken':
+                                        collectedBaseToken += collectedFee;
+                                        break;
+                                }
+                                await test.execute();
+                                expect(await orderbook.collectedFees())
+                                    .to.be.deep.equal([ collectedTradedToken, collectedBaseToken ]);
                             });
 
                             if (scenario.deletesOrder) {

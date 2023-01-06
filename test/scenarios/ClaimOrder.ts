@@ -134,6 +134,64 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
     claimOrderScenarios.push([
+        `claim ${describeOrderType(orderType)} orders with fee`,
+        generatorChain(function*() {
+            yield {
+                orderType,
+                orderId: 1n,
+                maxAmount: 3n,
+                describer: describer.clone().configure({
+                    hideOrderType: true,
+                    hideOrderId: true,
+                    hideContractSize: true,
+                    hidePriceTick: true,
+                })
+            };
+
+        }).then(function*(properties) {
+            const { describer } = properties;
+            for (const price of [...range(1, 3)].map(v => parseValue(v))) {
+                yield {
+                    ...properties,
+                    price,
+                    setupActions: [
+                        new PlaceOrderAction({ describer, orderType, price, amount: 3n }),
+                        new FillAction({ describer, orderType, maxAmount: 3n }),
+                    ],
+                };
+            }
+
+        }).then(function*(properties) {
+            yield properties;
+
+            const { describer, orderId, price, setupActions } = properties;
+            for (const maxAmount of range(1n, 2n)) {
+                yield {
+                    ...properties,
+                    price,
+                    setupActions: [
+                        ...setupActions,
+                        new ClaimOrderAction({ describer, orderType, price, orderId, maxAmount }),
+                    ],
+                };
+            }
+
+        }).then(function*(properties) {
+            for (const fee of [ '0.0001', '0.0002', '0.0003' ].map(v => parseValue(v))) {
+                yield {
+                    ...properties,
+                    fee,
+                };
+            }
+
+        }).then(function*(properties) {
+            yield new ClaimOrderScenario(properties);
+        })
+    ]);
+}
+
+for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
+    claimOrderScenarios.push([
         `claim deleted ${describeOrderType(orderType)} orders`,
         generatorChain(function*() {
             yield {

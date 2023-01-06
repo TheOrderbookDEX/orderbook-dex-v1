@@ -1,4 +1,4 @@
-import { formatValue, MAX_UINT256, MAX_UINT8, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { formatValue, MAX_UINT256, MAX_UINT8, parseValue, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { FillAction } from '../action/Fill';
 import { describeOrderType, OrderType } from '../state/OrderType';
@@ -135,6 +135,10 @@ export class FillScenario extends OrderbookScenario<OrderbookContext, Transactio
             case OrderType.BUY:
                 return this.totalPrice;
         }
+    }
+
+    get collectedFee() {
+        return this.givenAmount * this.fee / parseValue(1);
     }
 
     get totalFilled() {

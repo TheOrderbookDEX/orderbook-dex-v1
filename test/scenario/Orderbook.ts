@@ -45,7 +45,7 @@ export abstract class OrderbookScenario<TestContext extends OrderbookContext, Ex
 
     addContext(addContext: AddContextFunction): void {
         if (this.fee) {
-            addContext('fee', this.fee);
+            addContext('fee', formatValue(this.fee));
         }
         addContext('contractSize', formatValue(this.contractSize));
         addContext('priceTick', formatValue(this.priceTick));

@@ -2,7 +2,7 @@ import { OrderbookContext, OrderbookScenario, OrderbookScenarioProperties } from
 import { AddContextFunction } from '@frugal-wizard/contract-test-helper';
 import { describeOrderType, OrderType } from '../state/OrderType';
 import { ClaimOrderAction } from '../action/ClaimOrder';
-import { formatValue, MAX_UINT32, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { formatValue, MAX_UINT32, parseValue, Transaction } from '@frugal-wizard/abi2ts-lib';
 
 export interface ClaimOrderScenarioProperties extends OrderbookScenarioProperties<OrderbookContext> {
     readonly orderType: OrderType;
@@ -78,6 +78,10 @@ export class ClaimOrderScenario extends OrderbookScenario<OrderbookContext, Tran
             case OrderType.BUY:
                 return this.amountClaimed * this.contractSize;
         }
+    }
+
+    get collectedFee() {
+        return this.givenAmount * this.fee / parseValue(1);
     }
 
     get deletesOrder() {

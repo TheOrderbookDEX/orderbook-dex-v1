@@ -2,6 +2,7 @@ import { AddContextFunction, BaseTestContext, TestScenario, TestScenarioProperti
 import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
 import { OrderbookFactoryV1 } from '../../src/OrderbookFactoryV1';
 import { OrderbookDEXTeamTreasuryMock } from '@theorderbookdex/orderbook-dex/dist/testing/OrderbookDEXTeamTreasuryMock';
+import { formatValue } from '@frugal-wizard/abi2ts-lib';
 
 export interface OrderbookFactoryContext extends BaseTestContext {
     readonly treasury: OrderbookDEXTeamTreasuryMock;
@@ -28,7 +29,7 @@ export abstract class OrderbookFactoryScenario<TestContext extends OrderbookFact
 
     addContext(addContext: AddContextFunction): void {
         if (this.fee) {
-            addContext('fee', this.fee);
+            addContext('fee', formatValue(this.fee));
         }
         super.addContext(addContext);
     }

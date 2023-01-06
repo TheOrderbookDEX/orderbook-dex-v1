@@ -178,6 +178,60 @@ for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
 
 for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
     fillScenarios.push([
+        `fill ${describeOrderType(orderType)} orders with fee`,
+        generatorChain(function*() {
+            yield {
+                describer: describer.clone().configure({
+                    hideOrderType: true,
+                    hideOrderId: true,
+                    hideContractSize: true,
+                    hidePriceTick: true,
+                }),
+            };
+
+        }).then(function*(properties) {
+            const { describer } = properties;
+            yield {
+                ...properties,
+                orderType,
+                maxAmount: 3n,
+                setupActions: [
+                    new PlaceOrderAction({ describer, orderType, price: parseValue(1), amount: 1n }),
+                    new PlaceOrderAction({ describer, orderType, price: parseValue(2), amount: 1n }),
+                    new PlaceOrderAction({ describer, orderType, price: parseValue(3), amount: 1n }),
+                ],
+            }
+
+        }).then(function*(properties) {
+            yield properties;
+
+            const { describer, setupActions } = properties;
+            for (const maxAmount of range(1n, 2n)) {
+                yield {
+                    ...properties,
+                    setupActions: [
+                        ...setupActions,
+                        new FillAction({ describer, orderType, maxAmount })
+                    ]
+                };
+            }
+
+        }).then(function*(properties) {
+            for (const fee of [ '0.0001', '0.0002', '0.0003' ].map(v => parseValue(v))) {
+                yield {
+                    ...properties,
+                    fee,
+                };
+            }
+
+        }).then(function*(properties) {
+            yield new FillScenario(properties);
+        })
+    ]);
+}
+
+for (const orderType of [ OrderType.SELL, OrderType.BUY ]) {
+    fillScenarios.push([
         `fill ${describeOrderType(orderType)} orders using maxPrice`,
         generatorChain(function*() {
             yield {

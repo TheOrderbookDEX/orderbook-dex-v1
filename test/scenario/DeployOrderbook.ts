@@ -49,7 +49,7 @@ export class DeployOrderbookScenario extends TestScenario<DeployOrderbookContext
 
     addContext(addContext: AddContextFunction): void {
         if (this.fee) {
-            addContext('fee', this.fee);
+            addContext('fee', formatValue(this.fee));
         }
         if (this.addressBookAddress) {
             addContext('address book address', this.addressBookAddress);
