@@ -19,6 +19,8 @@ import { describeOrderType, OrderType } from '../state/OrderType';
 import { DeployOrderbookFactoryScenario } from '../scenario/DeployOrderbookFactory';
 import { CreateOrderbookScenario } from '../scenario/CreateOrderbook';
 import { CreateOrderbookAction } from '../action/CreateOrderbook';
+import { ClaimFeesScenario } from '../scenario/ClaimFees';
+import { ClaimFeesAction } from '../action/ClaimFees';
 
 export interface OrderbookTestDescriberConfig {
     readonly hideContractSize?: boolean;
@@ -283,6 +285,10 @@ describer.addDescriber(CancelOrderUsingPuppetAction, function({
     return description.join(' ');
 });
 
+describer.addDescriber(ClaimFeesAction, function() {
+    return 'claim fees';
+});
+
 describer.addDescriber(DeployOrderbookScenario, function({
     addressBookAddress, tradedTokenAddress, baseTokenAddress, fee, contractSize, priceTick
 }, {
@@ -520,6 +526,33 @@ describer.addDescriber(TransferOrderScenario, function({
         description.push(`#${orderId}`);
     }
     description.push(`to ${newOwner}`)
+    for (const [ index, action ] of setupActions.entries()) {
+        description.push(index == 0 ? 'after' : 'and');
+        description.push(action.description);
+    }
+    const settings = [];
+    if (fee) {
+        settings.push(`fee at ${formatValue(fee)}`);
+    }
+    if (!hideContractSize) {
+        settings.push(`contract size at ${formatValue(contractSize)}`);
+    }
+    if (!hidePriceTick) {
+        settings.push(`price tick at ${formatValue(priceTick)}`);
+    }
+    if (settings.length) {
+        description.push('with');
+        description.push(settings.join(' and '));
+    }
+    return description.join(' ');
+});
+
+describer.addDescriber(ClaimFeesScenario, function({
+    setupActions, fee, contractSize, priceTick
+}, {
+    hideContractSize, hidePriceTick
+} = {}) {
+    const description = ['claim fees'];
     for (const [ index, action ] of setupActions.entries()) {
         description.push(index == 0 ? 'after' : 'and');
         description.push(action.description);

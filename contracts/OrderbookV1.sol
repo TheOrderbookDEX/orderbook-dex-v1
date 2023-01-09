@@ -579,7 +579,23 @@ contract OrderbookV1 is IOrderbookV1 {
     }
 
     function claimFees() external {
-        // TODO claimFees
+        if (address(_treasury) != msg.sender) {
+            revert Unauthorized();
+        }
+
+        uint256 collectedTradedToken_ = _collectedTradedToken;
+        uint256 collectedBaseToken_ = _collectedBaseToken;
+
+        _collectedTradedToken = 0;
+        _collectedBaseToken = 0;
+
+        if (collectedTradedToken_ > 0) {
+            _tradedToken.safeTransfer(address(_treasury), collectedTradedToken_);
+        }
+
+        if (collectedBaseToken_ > 0) {
+            _baseToken.safeTransfer(address(_treasury), collectedBaseToken_);
+        }
     }
 
     function addressBook() external view returns (IAddressBook) {
