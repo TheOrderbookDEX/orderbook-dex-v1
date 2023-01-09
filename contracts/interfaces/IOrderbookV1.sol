@@ -230,13 +230,6 @@ interface IOrderbookV1 is IOrderbook {
     function transferOrder(OrderType orderType, uint256 price, uint32 orderId, address newOwner) external;
 
     /**
-     * Claim collected fees.
-     *
-     * This can only be called by the Orderbook DEX Team Treasury contract.
-     */
-    function claimFees() external;
-
-    /**
      * The address book used by the orderbook.
      *
      * @return  the address book used by the orderbook
@@ -261,14 +254,6 @@ interface IOrderbookV1 is IOrderbook {
      * @return order     the data
      */
     function order(OrderType orderType, uint256 price, uint32 orderId) external view returns (Order memory order);
-
-    /**
-     * The total collected fees that have not yet been claimed.
-     *
-     * @return collectedTradedToken the amount in traded token
-     * @return collectedBaseToken   the amount in base token
-     */
-    function collectedFees() external view returns (uint256 collectedTradedToken, uint256 collectedBaseToken);
 }
 
 /**
