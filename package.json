@@ -1,6 +1,6 @@
 {
   "name": "@theorderbookdex/orderbook-dex-v1",
-  "version": "1.0.0-rc.13",
+  "version": "1.0.0-rc.14",
   "description": "This is the package for the V1 smart contract implementation of The Orderbook DEX",
   "license": "BUSL-1.1",
   "author": "The Orderbook DEX Team",
