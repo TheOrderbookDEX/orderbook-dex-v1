@@ -4,17 +4,13 @@ import { isEqualOrBetterPrice, OrderType } from './OrderType';
 type OrderWithId = Order & { orderId: bigint };
 
 export class Orders {
-    orders: Order[];
-
-    constructor() {
-        this.orders = [];
-    }
+    constructor(readonly orders: readonly Order[] = []) {}
 
     [Symbol.iterator]() {
         return this.orders[Symbol.iterator]();
     }
 
-    add(account: OrderOwner, orderType: OrderType, price: bigint, amount: bigint) {
+    add(owner: OrderOwner, orderType: OrderType, price: bigint, amount: bigint) {
         if (amount == 0n) {
             throw new Error('amount is 0');
         }
@@ -24,8 +20,10 @@ export class Orders {
         if (orderType == OrderType.BUY && this.askPrice && price >= this.askPrice) {
             throw new Error('at or above ask price');
         }
-        this.orders.push(new Order(account, orderType, price, amount));
-        return this;
+        return new Orders([
+            ...this.orders,
+            new Order({ owner, orderType, price, amount }),
+        ]);
     }
 
     get(orderType: OrderType, price: bigint, orderId: bigint) {
@@ -42,35 +40,50 @@ export class Orders {
         return this.get(orderType, price, orderId) !== undefined;
     }
 
-    fill(orderType: OrderType, maxPrice: bigint, maxAmount: bigint, maxPricePoints: number) {
+    fill(orderType: OrderType, maxPrice: bigint, maxAmount: bigint, maxPricePoints: number): Orders {
+        if (maxAmount <= 0n) return this;
+        if (maxPricePoints <= 0) return this;
+
+        const bestPrice = this.bestPrice(orderType);
+
+        if (!bestPrice) return this;
+        if (!isEqualOrBetterPrice(orderType, bestPrice, maxPrice)) return this;
+
         let remaining = maxAmount;
-        let price = this.bestPrice(orderType);
-        let pricePointsFilled = 0;
-        while (pricePointsFilled < maxPricePoints && remaining && price && isEqualOrBetterPrice(orderType, price, maxPrice)) {
-            for (const order of this) {
-                if (order.orderType != orderType) continue;
-                if (order.price != price) continue;
-                remaining = order.fill(remaining);
-                if (!remaining) break;
+
+        return new Orders(this.orders.map(order => {
+            if (!remaining) return order;
+            if (order.orderType != orderType) return order;
+            if (order.price != bestPrice) return order;
+            if (!order.available) return order;
+            if (remaining > order.available) {
+                const newOrder = order.fill(order.available);
+                remaining -= order.available;
+                return newOrder;
+            } else {
+                const newOrder = order.fill(remaining);
+                remaining = 0n;
+                return newOrder;
             }
-            price = this.bestPrice(orderType);
-            pricePointsFilled++;
-        }
-        return this;
+        })).fill(orderType, maxPrice, remaining, maxPricePoints-1);
     }
 
     claim(orderType: OrderType, price: bigint, orderId: bigint, maxAmount: bigint) {
         const order = this.get(orderType, price, orderId);
         if (!order) throw new Error('claiming non existing order');
-        order.claim(maxAmount);
-        return this;
+        return new Orders(this.orders.map(o => o == order ? o.claim(maxAmount) : o));
     }
 
     cancel(orderType: OrderType, price: bigint, orderId: bigint) {
         const order = this.get(orderType, price, orderId);
         if (!order) throw new Error('canceling non existing order');
-        order.cancel();
-        return this;
+        return new Orders(this.orders.map(o => o == order ? o.cancel() : o));
+    }
+
+    transfer(orderType: OrderType, price: bigint, orderId: bigint, newOwner: string) {
+        const order = this.get(orderType, price, orderId);
+        if (!order) throw new Error('transfering non existing order');
+        return new Orders(this.orders.map(o => o == order ? o.transfer(newOwner) : o));
     }
 
     get tradedTokenBalance() {

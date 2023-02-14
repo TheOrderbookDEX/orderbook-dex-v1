@@ -25,7 +25,7 @@
   },
   "devDependencies": {
     "@frugal-wizard/abi2ts": "^0.8.0",
-    "@frugal-wizard/contract-test-helper": "^0.3.0",
+    "@frugal-wizard/contract-test-helper": "^0.5.0",
     "@frugal-wizard/solidity-compiler-wrapper": "^1.2.0",
     "@types/chai": "^4.3.4",
     "@types/chai-as-promised": "^7.1.5",
