@@ -134,7 +134,7 @@ export function createClaimOrderScenario({
                 ctx.addContext('orderType', describeOrderType(orderType));
                 ctx.addContext('price', formatValue(price));
                 ctx.addContext('orderId', orderId);
-                if (maxAmount != MAX_UINT32) ctx.addContext('maxAmount', maxAmount);
+                ctx.addContext('maxAmount', maxAmount == MAX_UINT32 ? 'MAX' : maxAmount);
 
                 await executeSetupActions(setupActions, ctx);
 

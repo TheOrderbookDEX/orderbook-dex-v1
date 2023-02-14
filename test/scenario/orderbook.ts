@@ -49,7 +49,7 @@ export function createOrderbookScenario<Context>({
             description,
 
             async setup(ctx) {
-                if (fee) ctx.addContext('fee', formatValue(fee));
+                ctx.addContext('fee', formatValue(fee));
                 ctx.addContext('contractSize', formatValue(contractSize));
                 ctx.addContext('priceTick', formatValue(priceTick));
 

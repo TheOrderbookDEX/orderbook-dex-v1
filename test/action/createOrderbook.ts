@@ -23,8 +23,7 @@ export function createCreateOrderbookAction({
             hidePriceTick,
         }),
 
-        async execute(ctx) {
-            const { orderbookFactory } = ctx;
+        async execute({ orderbookFactory }) {
             const tradedToken = await ERC20Mock.deploy('Traded Token', 'TRADED', 18);
             const baseToken = await ERC20Mock.deploy('Base Token', 'BASE', 18);
             await orderbookFactory.createOrderbook(tradedToken, baseToken, contractSize, priceTick);

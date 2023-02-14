@@ -1,6 +1,6 @@
 import { createOrderbookScenario, DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK, OrderbookContext, OrderbookScenario } from './orderbook';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { ContractError, formatValue, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { ContractError, formatValue, MAX_UINT256, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugal-wizard/contract-test-helper';
 import { describePlaceOrderScenario } from '../describe/placeOrder';
 import { OrderbookAction } from '../action/orderbook';
@@ -30,7 +30,7 @@ export function createPlaceOrderScenario({
     orderType,
     price,
     amount,
-    allowance,
+    allowance = MAX_UINT256,
     fee = DEFAULT_FEE,
     contractSize = DEFAULT_CONTRACT_SIZE,
     priceTick = DEFAULT_PRICE_TICK,
@@ -114,11 +114,11 @@ export function createPlaceOrderScenario({
                 ctx.addContext('orderType', describeOrderType(orderType));
                 ctx.addContext('price', formatValue(price));
                 ctx.addContext('amount', amount);
-                if (allowance) ctx.addContext('allowance', formatValue(allowance));
+                ctx.addContext('allowance', allowance == MAX_UINT256 ? 'MAX' : formatValue(allowance));
 
                 await executeSetupActions(setupActions, ctx);
 
-                await ctx[takenToken].approve(ctx.orderbook, allowance ?? takenAmount);
+                await ctx[takenToken].approve(ctx.orderbook, allowance);
 
                 return {
                     ...ctx,

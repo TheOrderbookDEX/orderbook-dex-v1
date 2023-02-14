@@ -2,11 +2,11 @@ import { OrderbookAction } from './orderbook';
 import { describeClaimFeesAction } from '../describe/claimFees';
 
 export function createClaimFeesAction(): OrderbookAction {
+
     return {
         description: describeClaimFeesAction(),
 
-        async execute(ctx) {
-            const { treasury, orderbook } = ctx;
+        async execute({ treasury, orderbook }) {
             await treasury.claimFees(orderbook);
         },
 

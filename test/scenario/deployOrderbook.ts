@@ -34,17 +34,17 @@ export function createDeployOrderbookScenario({
     hidePriceTick = false,
     expectedError,
 }: {
-    only?: boolean;
-    description?: string;
-    fee?: bigint;
-    addressBookAddress?: DeployAddress | Addresses;
-    tradedTokenAddress?: DeployAddress | Addresses;
-    baseTokenAddress?: DeployAddress | Addresses;
-    contractSize?: bigint;
-    priceTick?: bigint;
-    hideContractSize?: boolean;
-    hidePriceTick?: boolean;
-    expectedError?: ContractError;
+    readonly only?: boolean;
+    readonly description?: string;
+    readonly fee?: bigint;
+    readonly addressBookAddress?: DeployAddress | Addresses;
+    readonly tradedTokenAddress?: DeployAddress | Addresses;
+    readonly baseTokenAddress?: DeployAddress | Addresses;
+    readonly contractSize?: bigint;
+    readonly priceTick?: bigint;
+    readonly hideContractSize?: boolean;
+    readonly hidePriceTick?: boolean;
+    readonly expectedError?: ContractError;
 }): DeployOrderbookScenario {
 
     return {

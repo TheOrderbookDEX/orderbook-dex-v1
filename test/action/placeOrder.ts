@@ -2,6 +2,7 @@ import { OrderType } from '../state/OrderType';
 import { OrderbookAction } from './orderbook';
 import { Account } from '@frugal-wizard/contract-test-helper';
 import { describePlaceOrderAction } from '../describe/placeOrder';
+import { MAX_UINT256 } from '@frugal-wizard/abi2ts-lib';
 
 export function createPlaceOrderAction({
     account = Account.MAIN,
@@ -35,17 +36,20 @@ export function createPlaceOrderAction({
             hideAccount,
         }),
 
-        async execute(ctx) {
-            const { tradedToken, baseToken, orderbook, [account]: from } = ctx;
+        async execute({ tradedToken, baseToken, orderbook, [account]: from }) {
             switch (orderType) {
                 case OrderType.SELL:
-                    await tradedToken.approve(orderbook, amount * await orderbook.contractSize(), { from });
+                    await tradedToken.approve(orderbook, MAX_UINT256, { from });
+                    await orderbook.placeOrder(orderType, price, amount, { from });
+                    await tradedToken.approve(orderbook, 0n, { from });
                     break;
+
                 case OrderType.BUY:
-                    await baseToken.approve(orderbook, amount * price, { from });
+                    await baseToken.approve(orderbook, MAX_UINT256, { from });
+                    await orderbook.placeOrder(orderType, price, amount, { from });
+                    await baseToken.approve(orderbook, 0n, { from });
                     break;
             }
-            await orderbook.placeOrder(orderType, price, amount, { from });
         },
 
         apply(orders) {

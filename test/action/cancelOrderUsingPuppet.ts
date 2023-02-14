@@ -37,13 +37,8 @@ export function createCancelOrderUsingPuppetAction({
             hideAccount,
         }),
 
-        async execute(ctx) {
-            const { puppet, orderbook } = ctx;
-            await puppet.call(orderbook, this.encode());
-        },
-
-        async approve() {
-            return;
+        async execute({ puppet, orderbook }) {
+            await puppet.call(orderbook, OrderbookV1.encode.cancelOrder(orderType, price, orderId, maxLastOrderId));
         },
 
         encode() {

@@ -145,7 +145,7 @@ export function createCancelOrderScenario({
                 ctx.addContext('orderType', describeOrderType(orderType));
                 ctx.addContext('price', formatValue(price));
                 ctx.addContext('orderId', orderId);
-                if (maxLastOrderId != MAX_UINT32) ctx.addContext('maxLastOrderId', maxLastOrderId);
+                ctx.addContext('maxLastOrderId', maxLastOrderId == MAX_UINT32 ? 'MAX' : maxLastOrderId);
 
                 await executeSetupActions(setupActions, ctx);
 

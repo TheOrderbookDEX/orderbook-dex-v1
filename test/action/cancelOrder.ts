@@ -34,8 +34,7 @@ export function createCancelOrderAction({
             hideAccount: true,
         }),
 
-        async execute(ctx) {
-            const { addressBook, orderbook } = ctx;
+        async execute({ addressBook, orderbook }) {
             const from = await addressBook.addr((await orderbook.order(orderType, price, orderId)).owner);
             await orderbook.cancelOrder(orderType, price, orderId, maxLastOrderId, { from });
         },

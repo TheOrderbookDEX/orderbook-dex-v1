@@ -23,11 +23,11 @@ export function createDeployOrderbookFactoryScenario({
     addressBookAddress = DeployAddress,
     expectedError,
 }: {
-    only?: boolean;
-    description?: string;
-    fee?: bigint;
-    addressBookAddress?: DeployAddress | Addresses;
-    expectedError?: ContractError;
+    readonly only?: boolean;
+    readonly description?: string;
+    readonly fee?: bigint;
+    readonly addressBookAddress?: DeployAddress | Addresses;
+    readonly expectedError?: ContractError;
 }): DeployOrderbookFactoryScenario {
 
     return {

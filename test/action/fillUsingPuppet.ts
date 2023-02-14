@@ -38,27 +38,19 @@ export function createFillUsingPuppetAction({
             hideAccount,
         }),
 
-        async execute(ctx) {
-            const { puppet, orderbook } = ctx;
-            await this.approve(ctx);
-            await puppet.call(orderbook, this.encode());
-        },
-
-        async approve(ctx) {
-            const { tradedToken, baseToken, orderbook, puppet } = ctx;
+        async execute({ tradedToken, baseToken, orderbook, puppet }) {
             switch (orderType) {
                 case OrderType.SELL: {
-                    let allowance = await baseToken.allowance(puppet, orderbook);
-                    allowance += maxAmount * maxPrice;
-                    if (allowance > MAX_UINT256) allowance = MAX_UINT256;
-                    await puppet.call(baseToken, baseToken.encode.approve(orderbook, allowance));
+                    await puppet.call(baseToken, baseToken.encode.approve(orderbook, MAX_UINT256));
+                    await puppet.call(orderbook, OrderbookV1.encode.fill(orderType, maxAmount, maxPrice, maxPricePoints));
+                    await puppet.call(baseToken, baseToken.encode.approve(orderbook, 0n));
                     break;
                 }
+
                 case OrderType.BUY: {
-                    let allowance = await tradedToken.allowance(puppet, orderbook);
-                    allowance += maxAmount * await orderbook.contractSize();
-                    if (allowance > MAX_UINT256) allowance = MAX_UINT256;
-                    await puppet.call(tradedToken, tradedToken.encode.approve(orderbook, allowance));
+                    await puppet.call(tradedToken, tradedToken.encode.approve(orderbook, MAX_UINT256));
+                    await puppet.call(orderbook, OrderbookV1.encode.fill(orderType, maxAmount, maxPrice, maxPricePoints));
+                    await puppet.call(tradedToken, tradedToken.encode.approve(orderbook, 0n));
                     break;
                 }
             }

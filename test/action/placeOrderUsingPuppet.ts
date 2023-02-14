@@ -3,6 +3,7 @@ import { ReentrancyAction } from './reentrancy';
 import { OrderbookV1 } from '../../src/OrderbookV1';
 import { describePlaceOrderAction } from '../describe/placeOrder';
 import { SpecialAccount } from '../scenario/reentrancy';
+import { MAX_UINT256 } from '@frugal-wizard/abi2ts-lib';
 
 export function createPlaceOrderUsingPuppetAction({
     orderType,
@@ -34,20 +35,18 @@ export function createPlaceOrderUsingPuppetAction({
             hideAccount,
         }),
 
-        async execute(ctx) {
-            const { puppet, orderbook } = ctx;
-            await this.approve(ctx);
-            await puppet.call(orderbook, this.encode());
-        },
-
-        async approve(ctx) {
-            const { puppet, tradedToken, baseToken, orderbook } = ctx;
+        async execute({ puppet, tradedToken, baseToken, orderbook }) {
             switch (orderType) {
                 case OrderType.SELL:
-                    await puppet.call(tradedToken, tradedToken.encode.increaseAllowance(orderbook, amount * await orderbook.contractSize()));
+                    await puppet.call(tradedToken, tradedToken.encode.approve(orderbook, MAX_UINT256));
+                    await puppet.call(orderbook, OrderbookV1.encode.placeOrder(orderType, price, amount));
+                    await puppet.call(tradedToken, tradedToken.encode.approve(orderbook, 0n));
                     break;
+
                 case OrderType.BUY:
-                    await puppet.call(baseToken, baseToken.encode.increaseAllowance(orderbook, amount * price));
+                    await puppet.call(baseToken, baseToken.encode.approve(orderbook, MAX_UINT256));
+                    await puppet.call(orderbook, OrderbookV1.encode.placeOrder(orderType, price, amount));
+                    await puppet.call(baseToken, baseToken.encode.approve(orderbook, 0n));
                     break;
             }
         },

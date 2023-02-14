@@ -3,7 +3,7 @@ import { Puppet } from '@theorderbookdex/orderbook-dex/dist/testing/Puppet';
 import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
 import { Orders } from '../state/Orders';
 import { Callable, ERC20ForReentrancyTesting } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20ForReentrancyTesting';
-import { ContractError, formatValue, parseValue, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { ContractError, formatValue, MAX_UINT256, parseValue, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { ReentrancyAction } from '../action/reentrancy';
 import { OrderbookAction } from '../action/orderbook';
 import { createEthereumScenario, EthereumScenario, EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugal-wizard/contract-test-helper';
@@ -104,8 +104,8 @@ export function createReentrancyScenario({
                 ctx.addContext('compromised token', compromisedToken);
                 ctx.addContext('main action', mainAction.description);
                 ctx.addContext('reentrant action', reentrantAction.description);
-                if (expectedErrors.length) ctx.addContext('expected errors', expectedErrors.map(error => error.name).join('\n'));
-                if (fee) ctx.addContext('fee', formatValue(fee));
+                ctx.addContext('expected errors', expectedErrors.length ? expectedErrors.map(error => error.name).join('\n') : 'none');
+                ctx.addContext('fee', formatValue(fee));
                 ctx.addContext('contractSize', formatValue(contractSize));
                 ctx.addContext('priceTick', formatValue(priceTick));
 
@@ -134,9 +134,10 @@ export function createReentrancyScenario({
                 return await (async (ctx) => {
                     await executeSetupActions(setupActions, ctx);
 
-                    await mainAction.approve(ctx);
-                    await reentrantAction.approve(ctx);
+                    await puppet.call(tradedToken, tradedToken.encode.approve(orderbook, MAX_UINT256));
+                    await puppet.call(baseToken, baseToken.encode.approve(orderbook, MAX_UINT256));
                     await ctx[compromisedToken].callBeforeTransfer(new Callable(puppet, Puppet.encode.call(orderbook, reentrantAction.encode())));
+
                     return ctx;
                 })({
                     ...ctx,

@@ -32,10 +32,9 @@ export function createTransferOrderAction({
             hideOrderId,
         }),
 
-        async execute(ctx) {
-            const { addressBook, orderbook } = ctx;
+        async execute({ addressBook, orderbook, [newOwner]: newOwnerAddress }) {
             const from = await addressBook.addr((await orderbook.order(orderType, price, orderId)).owner);
-            await orderbook.transferOrder(orderType, price, orderId, ctx[newOwner], { from });
+            await orderbook.transferOrder(orderType, price, orderId, newOwnerAddress, { from });
         },
 
         apply(orders) {

@@ -5,6 +5,5 @@ import { Orders } from '../state/Orders';
 
 export type ReentrancyAction = SetupAction<EthereumSetupContext & OrderbookContext & ReentrancyContext> & {
     apply(orders: Orders): Orders;
-    approve(ctx: ReentrancyContext): Promise<void>;
     encode(): string;
 };

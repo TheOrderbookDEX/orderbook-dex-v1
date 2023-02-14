@@ -41,13 +41,8 @@ export function createClaimOrderUsingPuppetAction({
             hideAccount,
         }),
 
-        async execute(ctx) {
-            const { puppet, orderbook } = ctx;
-            await puppet.call(orderbook, this.encode());
-        },
-
-        async approve() {
-            return;
+        async execute({ puppet, orderbook }) {
+            await puppet.call(orderbook, OrderbookV1.encode.claimOrder(orderType, price, orderId, maxAmount));
         },
 
         encode() {

@@ -37,7 +37,7 @@ export function createFillScenario({
     maxAmount,
     maxPrice = orderType == OrderType.SELL ? MAX_UINT256 : 0n,
     maxPricePoints = MAX_UINT8,
-    allowance,
+    allowance = MAX_UINT256,
     fee = DEFAULT_FEE,
     contractSize = DEFAULT_CONTRACT_SIZE,
     priceTick = DEFAULT_PRICE_TICK,
@@ -70,10 +70,6 @@ export function createFillScenario({
 
     const takenToken = orderType == OrderType.SELL ? 'baseToken' : 'tradedToken';
     const givenToken = orderType == OrderType.SELL ? 'tradedToken' : 'baseToken';
-
-    const maxTakenAmount = orderType == OrderType.SELL ?
-        (maxPrice == MAX_UINT256 ? MAX_UINT256 : maxAmount * maxPrice) :
-        maxAmount * contractSize;
 
     const bestPrice = orderType == OrderType.SELL ? 'askPrice' : 'bidPrice';
 
@@ -152,13 +148,13 @@ export function createFillScenario({
             async setup(ctx) {
                 ctx.addContext('orderType', describeOrderType(orderType));
                 ctx.addContext('maxAmount', maxAmount);
-                if (maxPrice != 0n || maxPrice != MAX_UINT256) ctx.addContext('maxPrice', formatValue(maxPrice));
-                if (maxPricePoints != MAX_UINT8) ctx.addContext('maxPricePoints', maxPricePoints);
-                if (allowance) ctx.addContext('allowance', formatValue(allowance));
+                ctx.addContext('maxPrice', maxPrice == MAX_UINT256 ? 'MAX' : formatValue(maxPrice));
+                ctx.addContext('maxPricePoints', maxPricePoints == MAX_UINT8 ? 'MAX' : maxPricePoints);
+                ctx.addContext('allowance', allowance == MAX_UINT256 ? 'MAX' : formatValue(allowance));
 
                 await executeSetupActions(setupActions, ctx);
 
-                await ctx[takenToken].approve(ctx.orderbook, allowance ?? maxTakenAmount);
+                await ctx[takenToken].approve(ctx.orderbook, allowance);
 
                 return {
                     ...ctx,

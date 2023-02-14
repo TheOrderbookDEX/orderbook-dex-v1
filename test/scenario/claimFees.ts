@@ -1,5 +1,5 @@
 import { createOrderbookScenario, DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK, OrderbookContext, OrderbookScenario } from './orderbook';
-import { EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugal-wizard/contract-test-helper';
+import { Account, EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugal-wizard/contract-test-helper';
 import { ContractError, Transaction } from '@frugal-wizard/abi2ts-lib';
 import { describeClaimFeesScenario } from '../describe/claimFees';
 import { OrderbookAction } from '../action/orderbook';
@@ -53,7 +53,7 @@ export function createClaimFeesScenario({
             priceTick,
 
             async setup(ctx) {
-                if (usingTreasury) ctx.addContext('using', 'treasury');
+                ctx.addContext('using', usingTreasury ? 'treasury' : Account.MAIN);
 
                 await executeSetupActions(setupActions, ctx);
 

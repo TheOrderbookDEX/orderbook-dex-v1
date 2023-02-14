@@ -34,7 +34,7 @@ export function createOrderbookFactoryScenario<Context>({
             description,
 
             async setup(ctx) {
-                if (fee) ctx.addContext('fee', formatValue(fee));
+                ctx.addContext('fee', formatValue(fee));
 
                 const treasury = await OrderbookDEXTeamTreasuryMock.deploy(fee);
 

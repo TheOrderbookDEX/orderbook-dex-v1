@@ -35,17 +35,20 @@ export function createFillAction({
             hideAccount: true,
         }),
 
-        async execute(ctx) {
-            const { tradedToken, baseToken, orderbook } = ctx;
+        async execute({ tradedToken, baseToken, orderbook }) {
             switch (orderType) {
                 case OrderType.SELL:
-                    await baseToken.approve(orderbook, maxPrice == MAX_UINT256 ? maxPrice : maxAmount * maxPrice);
+                    await baseToken.approve(orderbook, MAX_UINT256);
+                    await orderbook.fill(orderType, maxAmount, maxPrice, maxPricePoints);
+                    await baseToken.approve(orderbook, 0n);
                     break;
+
                 case OrderType.BUY:
-                    await tradedToken.approve(orderbook, maxAmount * await orderbook.contractSize());
+                    await tradedToken.approve(orderbook, MAX_UINT256);
+                    await orderbook.fill(orderType, maxAmount, maxPrice, maxPricePoints);
+                    await tradedToken.approve(orderbook, 0n);
                     break;
             }
-            await orderbook.fill(orderType, maxAmount, maxPrice, maxPricePoints);
         },
 
         apply(orders) {
