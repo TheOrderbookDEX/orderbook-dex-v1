@@ -6,6 +6,7 @@ import { describePlaceOrderScenario } from '../describe/placeOrder';
 import { OrderbookAction } from '../action/orderbook';
 import { Orders } from '../state/Orders';
 import { applyActions } from '../utils/actions';
+import { Token } from '../state/Token';
 
 export type PlaceOrderScenario = OrderbookScenario<TestSetupContext & EthereumSetupContext & OrderbookContext & {
     execute(): Promise<Transaction>;
@@ -15,7 +16,7 @@ export type PlaceOrderScenario = OrderbookScenario<TestSetupContext & EthereumSe
     readonly price: bigint;
     readonly amount: bigint;
     readonly allowance?: bigint;
-    readonly takenToken: 'tradedToken' | 'baseToken';
+    readonly takenToken: Token;
     readonly takenAmount: bigint;
     readonly addsSellPrice: boolean;
     readonly addsBuyPrice: boolean;
@@ -60,7 +61,7 @@ export function createPlaceOrderScenario({
     readonly setupActions?: OrderbookAction[];
 }): PlaceOrderScenario {
 
-    const takenToken = orderType == OrderType.SELL ? 'tradedToken' : 'baseToken';
+    const takenToken = orderType == OrderType.SELL ? Token.TRADED : Token.BASE;
     const takenAmount = amount * (orderType == OrderType.SELL ? contractSize : price);
 
     const ordersBefore = applyActions(setupActions, new Orders());

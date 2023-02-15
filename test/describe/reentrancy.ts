@@ -1,7 +1,6 @@
 import { describeSetupActions } from '@frugal-wizard/contract-test-helper';
 import { OrderbookAction } from '../action/orderbook';
 import { ReentrancyAction } from '../action/reentrancy';
-import { Token } from '../state/Token';
 import { describeOrderbookProps } from './orderbook';
 
 export function describeReentrancyScenario({
@@ -15,7 +14,7 @@ export function describeReentrancyScenario({
     hidePriceTick,
     setupActions,
 }: {
-    readonly compromisedToken: Token;
+    readonly compromisedToken: string;
     readonly mainAction: ReentrancyAction;
     readonly reentrantAction: ReentrancyAction;
     readonly fee: bigint;

@@ -5,6 +5,8 @@ import { OrderbookAction } from '../action/orderbook';
 import { describeFillScenario } from '../describe/fill';
 import { Orders } from '../state/Orders';
 import { describeOrderType, OrderType } from '../state/OrderType';
+import { Price } from '../state/Price';
+import { Token } from '../state/Token';
 import { applyActions, applyActionThatMightFail } from '../utils/actions';
 import { createOrderbookScenario, DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK, OrderbookContext, OrderbookScenario } from './orderbook';
 
@@ -17,15 +19,15 @@ export type FillScenario = OrderbookScenario<TestSetupContext & EthereumSetupCon
     readonly maxPrice: bigint;
     readonly maxPricePoints: number;
     readonly allowance?: bigint;
-    readonly takenToken: 'tradedToken' | 'baseToken';
-    readonly givenToken: 'tradedToken' | 'baseToken';
+    readonly takenToken: Token;
+    readonly givenToken: Token;
     readonly takenAmount: bigint;
     readonly givenAmount: bigint;
     readonly collectedFee: bigint;
     readonly totalFilled: bigint;
     readonly filledAmounts: Map<bigint, bigint>;
     readonly totalPrice: bigint;
-    readonly bestPrice: 'askPrice' | 'bidPrice';
+    readonly bestPrice: Price;
     readonly expectedBestPrice: bigint;
     readonly expectedError?: ContractError;
 };
@@ -68,10 +70,10 @@ export function createFillScenario({
     readonly setupActions?: OrderbookAction[];
 }): FillScenario {
 
-    const takenToken = orderType == OrderType.SELL ? 'baseToken' : 'tradedToken';
-    const givenToken = orderType == OrderType.SELL ? 'tradedToken' : 'baseToken';
+    const takenToken = orderType == OrderType.SELL ? Token.BASE : Token.TRADED;
+    const givenToken = orderType == OrderType.SELL ? Token.TRADED : Token.BASE;
 
-    const bestPrice = orderType == OrderType.SELL ? 'askPrice' : 'bidPrice';
+    const bestPrice = orderType == OrderType.SELL ? Price.ASK : Price.BID;
 
     const ordersBefore = applyActions(setupActions, new Orders());
 

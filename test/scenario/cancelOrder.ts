@@ -5,6 +5,7 @@ import { OrderbookAction } from '../action/orderbook';
 import { describeCancelOrderScenario } from '../describe/cancelOrder';
 import { Orders } from '../state/Orders';
 import { describeOrderType, OrderType } from '../state/OrderType';
+import { Token } from '../state/Token';
 import { applyActions, applyActionThatMightFail } from '../utils/actions';
 import { createOrderbookScenario, DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK, OrderbookContext, OrderbookScenario } from './orderbook';
 
@@ -16,7 +17,7 @@ export type CancelOrderScenario = OrderbookScenario<TestSetupContext & EthereumS
     readonly price: bigint;
     readonly orderId: bigint;
     readonly maxLastOrderId: bigint;
-    readonly givenToken: 'tradedToken' | 'baseToken';
+    readonly givenToken: Token;
     readonly givenAmount: bigint;
     readonly amountCanceled: bigint;
     readonly deletesOrder: boolean;
@@ -66,7 +67,7 @@ export function createCancelOrderScenario({
     readonly setupActions?: OrderbookAction[];
 }): CancelOrderScenario {
 
-    const givenToken = orderType == OrderType.SELL ? 'tradedToken' : 'baseToken';
+    const givenToken = orderType == OrderType.SELL ? Token.TRADED : Token.BASE;
 
     const ordersBefore = applyActions(setupActions, new Orders());
 

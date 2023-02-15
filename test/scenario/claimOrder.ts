@@ -7,6 +7,7 @@ import { OrderbookAction } from '../action/orderbook';
 import { describeClaimOrderScenario } from '../describe/claimOrder';
 import { Orders } from '../state/Orders';
 import { applyActions, applyActionThatMightFail } from '../utils/actions';
+import { Token } from '../state/Token';
 
 export type ClaimOrderScenario = OrderbookScenario<TestSetupContext & EthereumSetupContext & OrderbookContext & {
     execute(): Promise<Transaction>;
@@ -16,7 +17,7 @@ export type ClaimOrderScenario = OrderbookScenario<TestSetupContext & EthereumSe
     readonly price: bigint;
     readonly orderId: bigint;
     readonly maxAmount: bigint;
-    readonly givenToken: 'tradedToken' | 'baseToken';
+    readonly givenToken: Token;
     readonly givenAmount: bigint;
     readonly collectedFee: bigint;
     readonly amountClaimed: bigint;
@@ -65,7 +66,7 @@ export function createClaimOrderScenario({
     readonly setupActions?: OrderbookAction[];
 }): ClaimOrderScenario {
 
-    const givenToken = orderType == OrderType.SELL ? 'baseToken' : 'tradedToken';
+    const givenToken = orderType == OrderType.SELL ? Token.BASE : Token.TRADED;
 
     const ordersBefore = applyActions(setupActions, new Orders());
 
