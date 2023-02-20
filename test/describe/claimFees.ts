@@ -1,4 +1,4 @@
-import { describeSetupActions } from '@frugal-wizard/contract-test-helper';
+import { describeSetupActions } from '@frugalwizard/contract-test-helper';
 import { OrderbookAction } from '../action/orderbook';
 import { describeOrderbookProps } from './orderbook';
 

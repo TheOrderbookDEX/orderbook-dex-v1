@@ -1,8 +1,8 @@
 import { OrderType } from '../state/OrderType';
 import { OrderbookAction } from './orderbook';
-import { MAX_UINT32 } from '@frugal-wizard/abi2ts-lib';
+import { MAX_UINT32 } from '@frugalwizard/abi2ts-lib';
 import { describeCancelOrderAction } from '../describe/cancelOrder';
-import { Account } from '@frugal-wizard/contract-test-helper';
+import { Account } from '@frugalwizard/contract-test-helper';
 
 export function createCancelOrderAction({
     orderType,

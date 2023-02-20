@@ -1,8 +1,8 @@
 import { OrderType } from '../state/OrderType';
 import { OrderbookAction } from './orderbook';
-import { MAX_UINT256, MAX_UINT8 } from '@frugal-wizard/abi2ts-lib';
+import { MAX_UINT256, MAX_UINT8 } from '@frugalwizard/abi2ts-lib';
 import { describeFillAction } from '../describe/fill';
-import { Account } from '@frugal-wizard/contract-test-helper';
+import { Account } from '@frugalwizard/contract-test-helper';
 
 export function createFillAction({
     orderType,

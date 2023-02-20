@@ -1,7 +1,7 @@
 import { createOrderbookScenario, DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK, OrderbookContext, OrderbookScenario } from './orderbook';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { ContractError, formatValue, MAX_UINT256, Transaction } from '@frugal-wizard/abi2ts-lib';
-import { EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugal-wizard/contract-test-helper';
+import { ContractError, formatValue, MAX_UINT256, Transaction } from '@frugalwizard/abi2ts-lib';
+import { EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugalwizard/contract-test-helper';
 import { describePlaceOrderScenario } from '../describe/placeOrder';
 import { OrderbookAction } from '../action/orderbook';
 import { Orders } from '../state/Orders';

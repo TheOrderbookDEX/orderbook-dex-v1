@@ -1,12 +1,12 @@
 import { Token } from '../state/Token';
 import { Puppet } from '@theorderbookdex/orderbook-dex/dist/testing/Puppet';
-import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
+import { AddressBook } from '@frugalwizard/addressbook/dist/AddressBook';
 import { Orders } from '../state/Orders';
 import { Callable, ERC20ForReentrancyTesting } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20ForReentrancyTesting';
-import { ContractError, formatValue, MAX_UINT256, parseValue, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { ContractError, formatValue, MAX_UINT256, parseValue, Transaction } from '@frugalwizard/abi2ts-lib';
 import { ReentrancyAction } from '../action/reentrancy';
 import { OrderbookAction } from '../action/orderbook';
-import { createEthereumScenario, EthereumScenario, EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugal-wizard/contract-test-helper';
+import { createEthereumScenario, EthereumScenario, EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugalwizard/contract-test-helper';
 import { OrderbookDEXTeamTreasuryMock } from '@theorderbookdex/orderbook-dex/dist/testing/OrderbookDEXTeamTreasuryMock';
 import { OrderbookV1 } from '../../dist/OrderbookV1';
 import { DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK } from './orderbook';

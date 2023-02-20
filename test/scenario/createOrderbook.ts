@@ -1,10 +1,10 @@
 import { ERC20Mock } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20Mock';
-import { ContractError, formatValue, Transaction } from '@frugal-wizard/abi2ts-lib';
+import { ContractError, formatValue, Transaction } from '@frugalwizard/abi2ts-lib';
 import { createOrderbookFactoryScenario, OrderbookFactoryContext, OrderbookFactoryScenario } from './factory';
 import { describeCreateOrderbookScenario } from '../describe/createOrderbook';
 import { OrderbookFactoryAction } from '../action/factory';
 import { DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK } from './orderbook';
-import { Addresses, EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugal-wizard/contract-test-helper';
+import { Addresses, EthereumSetupContext, executeSetupActions, TestSetupContext } from '@frugalwizard/contract-test-helper';
 import { DeployAddress } from '../utils/addresses';
 
 export type CreateOrderbookScenario = OrderbookFactoryScenario<TestSetupContext & EthereumSetupContext & OrderbookFactoryContext & {

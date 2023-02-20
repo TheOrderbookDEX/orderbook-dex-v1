@@ -1,4 +1,4 @@
-import { Addresses, generatorChain } from '@frugal-wizard/contract-test-helper';
+import { Addresses, generatorChain } from '@frugalwizard/contract-test-helper';
 import { InvalidAddressBook } from '../../src/OrderbookFactoryV1';
 import { createDeployOrderbookFactoryScenario } from '../scenario/deployFactory';
 

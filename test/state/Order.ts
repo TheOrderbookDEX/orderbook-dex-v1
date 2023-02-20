@@ -1,4 +1,4 @@
-import { Account } from '@frugal-wizard/contract-test-helper';
+import { Account } from '@frugalwizard/contract-test-helper';
 import { SpecialAccount } from '../scenario/reentrancy';
 import { OrderType } from './OrderType';
 

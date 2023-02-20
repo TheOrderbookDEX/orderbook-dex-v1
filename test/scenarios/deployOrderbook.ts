@@ -1,7 +1,7 @@
 import { createDeployOrderbookScenario } from '../scenario/deployOrderbook';
-import { Addresses, generatorChain } from '@frugal-wizard/contract-test-helper';
+import { Addresses, generatorChain } from '@frugalwizard/contract-test-helper';
 import { InvalidAddressBook, InvalidContractSize, InvalidPriceTick, InvalidTokenPair } from '../../src/OrderbookV1';
-import { parseValue } from '@frugal-wizard/abi2ts-lib';
+import { parseValue } from '@frugalwizard/abi2ts-lib';
 
 export const deployOrderbookScenarios = generatorChain(function*() {
     yield {};

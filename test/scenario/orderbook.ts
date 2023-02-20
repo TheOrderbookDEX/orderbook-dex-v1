@@ -1,9 +1,9 @@
 import { ERC20Mock } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20Mock';
-import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
+import { AddressBook } from '@frugalwizard/addressbook/dist/AddressBook';
 import { OrderbookV1 } from '../../src/OrderbookV1';
-import { formatValue, parseValue } from '@frugal-wizard/abi2ts-lib';
+import { formatValue, parseValue } from '@frugalwizard/abi2ts-lib';
 import { OrderbookDEXTeamTreasuryMock } from '@theorderbookdex/orderbook-dex/dist/testing/OrderbookDEXTeamTreasuryMock';
-import { createEthereumScenario, EthereumScenario, EthereumSetupContext, TestSetupContext } from '@frugal-wizard/contract-test-helper';
+import { createEthereumScenario, EthereumScenario, EthereumSetupContext, TestSetupContext } from '@frugalwizard/contract-test-helper';
 
 export type OrderbookScenario<Context> = EthereumScenario<Context> & {
     readonly fee: bigint;

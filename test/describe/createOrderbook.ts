@@ -1,5 +1,5 @@
-import { formatValue } from '@frugal-wizard/abi2ts-lib';
-import { describeSetupActions } from '@frugal-wizard/contract-test-helper';
+import { formatValue } from '@frugalwizard/abi2ts-lib';
+import { describeSetupActions } from '@frugalwizard/contract-test-helper';
 import { OrderbookFactoryAction } from '../action/factory';
 import { DeployAddress } from '../utils/addresses';
 

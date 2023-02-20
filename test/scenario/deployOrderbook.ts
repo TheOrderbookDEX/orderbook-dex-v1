@@ -1,8 +1,8 @@
-import { Addresses, createEthereumScenario, EthereumScenario, EthereumSetupContext, TestSetupContext } from '@frugal-wizard/contract-test-helper';
+import { Addresses, createEthereumScenario, EthereumScenario, EthereumSetupContext, TestSetupContext } from '@frugalwizard/contract-test-helper';
 import { OrderbookV1 } from '../../src/OrderbookV1';
 import { ERC20Mock } from '@theorderbookdex/orderbook-dex/dist/testing/ERC20Mock';
-import { AddressBook } from '@frugal-wizard/addressbook/dist/AddressBook';
-import { ContractError, formatValue } from '@frugal-wizard/abi2ts-lib';
+import { AddressBook } from '@frugalwizard/addressbook/dist/AddressBook';
+import { ContractError, formatValue } from '@frugalwizard/abi2ts-lib';
 import { OrderbookDEXTeamTreasuryMock } from '@theorderbookdex/orderbook-dex/dist/testing/OrderbookDEXTeamTreasuryMock';
 import { describeDeployOrderbookFactory } from '../describe/deployOrderbook';
 import { DEFAULT_CONTRACT_SIZE, DEFAULT_FEE, DEFAULT_PRICE_TICK } from './orderbook';

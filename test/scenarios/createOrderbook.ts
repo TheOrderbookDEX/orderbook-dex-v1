@@ -1,6 +1,6 @@
-import { Addresses, generatorChain } from '@frugal-wizard/contract-test-helper';
+import { Addresses, generatorChain } from '@frugalwizard/contract-test-helper';
 import { InvalidContractSize, InvalidPriceTick, InvalidTokenPair } from '../../src/OrderbookV1';
-import { parseValue } from '@frugal-wizard/abi2ts-lib';
+import { parseValue } from '@frugalwizard/abi2ts-lib';
 import { createCreateOrderbookScenario } from '../scenario/createOrderbook';
 import { createCreateOrderbookAction } from '../action/createOrderbook';
 

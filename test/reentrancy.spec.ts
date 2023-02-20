@@ -1,8 +1,8 @@
-import { DefaultOverrides } from '@frugal-wizard/abi2ts-lib';
+import { DefaultOverrides } from '@frugalwizard/abi2ts-lib';
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import { expect } from 'chai';
-import { range } from '@frugal-wizard/contract-test-helper';
+import { range } from '@frugalwizard/contract-test-helper';
 import { reentrancyScenarios } from './scenarios/reentrancy';
 import { OrderType } from './state/OrderType';
 import { Order, PricePoint } from '../src/OrderbookV1';

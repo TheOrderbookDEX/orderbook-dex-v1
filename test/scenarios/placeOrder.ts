@@ -1,7 +1,7 @@
-import { combinations, generatorChain, permutations, range, repetitions } from '@frugal-wizard/contract-test-helper';
+import { combinations, generatorChain, permutations, range, repetitions } from '@frugalwizard/contract-test-helper';
 import { EXHAUSTIVE } from '../config';
 import { describeOrderType, OrderType } from '../state/OrderType';
-import { DefaultError, parseValue } from '@frugal-wizard/abi2ts-lib';
+import { DefaultError, parseValue } from '@frugalwizard/abi2ts-lib';
 import { createPlaceOrderScenario } from '../scenario/placeOrder';
 import { createPlaceOrderAction } from '../action/placeOrder';
 import { createFillAction } from '../action/fill';

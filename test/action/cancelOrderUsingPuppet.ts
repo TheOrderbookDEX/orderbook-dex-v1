@@ -1,6 +1,6 @@
 import { OrderType } from '../state/OrderType';
 import { OrderbookV1 } from '../../src/OrderbookV1';
-import { MAX_UINT32 } from '@frugal-wizard/abi2ts-lib';
+import { MAX_UINT32 } from '@frugalwizard/abi2ts-lib';
 import { SpecialAccount } from '../scenario/reentrancy';
 import { ReentrancyAction } from './reentrancy';
 import { describeCancelOrderAction } from '../describe/cancelOrder';

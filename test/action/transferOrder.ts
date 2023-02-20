@@ -1,6 +1,6 @@
 import { OrderType } from '../state/OrderType';
 import { OrderbookAction } from './orderbook';
-import { Account, Addresses } from '@frugal-wizard/contract-test-helper';
+import { Account, Addresses } from '@frugalwizard/contract-test-helper';
 import { describeTransferOrderAction } from '../describe/transferOrder';
 
 export function createTransferOrderAction({

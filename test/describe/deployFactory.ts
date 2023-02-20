@@ -1,4 +1,4 @@
-import { formatValue } from '@frugal-wizard/abi2ts-lib';
+import { formatValue } from '@frugalwizard/abi2ts-lib';
 import { DeployAddress } from '../utils/addresses';
 
 export function describeDeployOrderbookFactoryScenario({

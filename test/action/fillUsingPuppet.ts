@@ -1,6 +1,6 @@
 import { OrderType } from '../state/OrderType';
 import { OrderbookV1 } from '../../src/OrderbookV1';
-import { MAX_UINT256, MAX_UINT8 } from '@frugal-wizard/abi2ts-lib';
+import { MAX_UINT256, MAX_UINT8 } from '@frugalwizard/abi2ts-lib';
 import { ReentrancyAction } from './reentrancy';
 import { describeFillAction } from '../describe/fill';
 import { SpecialAccount } from '../scenario/reentrancy';

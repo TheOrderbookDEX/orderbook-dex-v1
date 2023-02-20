@@ -3,7 +3,7 @@ import { ReentrancyAction } from './reentrancy';
 import { OrderbookV1 } from '../../src/OrderbookV1';
 import { describePlaceOrderAction } from '../describe/placeOrder';
 import { SpecialAccount } from '../scenario/reentrancy';
-import { MAX_UINT256 } from '@frugal-wizard/abi2ts-lib';
+import { MAX_UINT256 } from '@frugalwizard/abi2ts-lib';
 
 export function createPlaceOrderUsingPuppetAction({
     orderType,

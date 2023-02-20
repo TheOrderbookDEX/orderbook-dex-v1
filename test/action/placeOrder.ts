@@ -1,8 +1,8 @@
 import { OrderType } from '../state/OrderType';
 import { OrderbookAction } from './orderbook';
-import { Account } from '@frugal-wizard/contract-test-helper';
+import { Account } from '@frugalwizard/contract-test-helper';
 import { describePlaceOrderAction } from '../describe/placeOrder';
-import { MAX_UINT256 } from '@frugal-wizard/abi2ts-lib';
+import { MAX_UINT256 } from '@frugalwizard/abi2ts-lib';
 
 export function createPlaceOrderAction({
     account = Account.MAIN,

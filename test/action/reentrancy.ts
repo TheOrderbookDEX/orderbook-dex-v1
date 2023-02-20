@@ -1,4 +1,4 @@
-import { EthereumSetupContext, SetupAction } from '@frugal-wizard/contract-test-helper';
+import { EthereumSetupContext, SetupAction } from '@frugalwizard/contract-test-helper';
 import { OrderbookContext } from '../scenario/orderbook';
 import { ReentrancyContext } from '../scenario/reentrancy';
 import { Orders } from '../state/Orders';

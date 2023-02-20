@@ -1,5 +1,5 @@
-import { formatValue, MAX_UINT32 } from '@frugal-wizard/abi2ts-lib';
-import { Account, describeSetupActions } from '@frugal-wizard/contract-test-helper';
+import { formatValue, MAX_UINT32 } from '@frugalwizard/abi2ts-lib';
+import { Account, describeSetupActions } from '@frugalwizard/contract-test-helper';
 import { OrderbookAction } from '../action/orderbook';
 import { describeOrderType, OrderType } from '../state/OrderType';
 import { describeOrderbookProps } from './orderbook';

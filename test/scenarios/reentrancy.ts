@@ -1,5 +1,5 @@
-import { parseValue } from '@frugal-wizard/abi2ts-lib';
-import { Account, generatorChain } from '@frugal-wizard/contract-test-helper';
+import { parseValue } from '@frugalwizard/abi2ts-lib';
+import { Account, generatorChain } from '@frugalwizard/contract-test-helper';
 import { OrderDeleted } from '../../src/OrderbookV1';
 import { CannotPlaceOrder } from '../../src/OrderbookV1';
 import { createCancelOrderUsingPuppetAction } from '../action/cancelOrderUsingPuppet';
