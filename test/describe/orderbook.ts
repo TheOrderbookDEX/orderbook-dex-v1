@@ -21,13 +21,13 @@ export function describeOrderbookProps({
     readonly hidePriceTick: boolean;
 }): string {
     const description = [];
-    if (addressBookAddress != DeployAddress) {
+    if (addressBookAddress !== undefined && addressBookAddress != DeployAddress) {
         description.push(`addressBook = ${addressBookAddress}`);
     }
-    if (tradedTokenAddress != DeployAddress) {
+    if (tradedTokenAddress !== undefined && tradedTokenAddress != DeployAddress) {
         description.push(`tradedToken = ${tradedTokenAddress}`);
     }
-    if (baseTokenAddress != DeployAddress) {
+    if (baseTokenAddress !== undefined && baseTokenAddress != DeployAddress) {
         description.push(`baseToken = ${baseTokenAddress}`);
     }
     if (fee) {
